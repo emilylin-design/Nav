@@ -127,6 +127,16 @@ section.block + section.block { padding-top: 2.5rem; }
   margin-right: 0.5rem;
   vertical-align: 1px;
 }
+.entity-intents { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem; margin-top: 0.625rem; }
+.intent-step { font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 400; padding: 0.2rem 0.5rem; border-radius: 3px; white-space: nowrap; }
+.intent-arrow { font-size: 0.625rem; color: var(--gray-400); line-height: 1; }
+.entity-row[data-for="app"] .intent-step { background: rgba(20,184,166,0.08); color: #0F766E; }
+.entity-row[data-for="bus"] .intent-step { background: rgba(82,184,255,0.1); color: #1D6FA3; }
+.entity-row[data-for="prod"] .intent-step { background: rgba(118,97,255,0.08); color: #5B48CC; }
+.entity-row[data-for="debt"] .intent-step { background: rgba(248,113,113,0.08); color: #B91C1C; }
+.entity-row[data-for="trm"] .intent-step { background: rgba(191,113,242,0.08); color: #7E22CE; }
+.entity-row[data-for="arb"] .intent-step { background: rgba(99,223,78,0.12); color: #3A7D2C; }
+.entity-row[data-for="data"] .intent-step { background: rgba(251,191,36,0.1); color: #92400E; }
 .entity-body strong[data-entity="app"]::before { background: #14B8A6; }
 .entity-body strong[data-entity="bus"]::before { background: #52B8FF; }
 .entity-body strong[data-entity="prod"]::before { background: #7661FF; }
@@ -148,22 +158,33 @@ section.block + section.block { padding-top: 2.5rem; }
 .tab-next-btn span { display: inline-block; transition: transform 0.15s; }
 .tab-next-btn:hover span { transform: translateX(2px); }
 
-/* Hybrid nav annotated layout — single card with internal label column */
-.hybrid-annotated { max-width: 48rem; margin: 0 auto 1.5rem; }
-.hybrid-annotated-header { text-align: center; margin-bottom: 2rem; }
-.hybrid-annotated-header .nav-card-desc { max-width: 32rem; margin: 0 auto; }
-.hybrid-band-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: 0.75rem; box-shadow: var(--shadow-md); overflow: hidden; }
-.hybrid-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.5fr); gap: 2rem; padding: 1.5rem; align-items: start; }
-.hybrid-row--bordered { border-top: 1px solid var(--gray-200); }
-.hybrid-row + .hybrid-row:not(.hybrid-row--bordered) { padding-top: 0.25rem; }
-.hybrid-row-label { padding-top: 0.375rem; }
+/* Hybrid nav annotated layout — annotations outside white card */
+.hybrid-annotated { max-width: 52rem; margin: 0 auto 1.5rem; }
+.hybrid-annotated-header { text-align: left; margin-bottom: 2rem; max-width: 350px; }
+.hybrid-annotated-header .nav-card-desc { max-width: 350px; margin: 0; }
+
+/* Outer band: white card left (350px), annotation right */
+.hybrid-band { display: flex; gap: 2rem; align-items: flex-start; }
+.hybrid-row-label { flex: 1; padding-top: 1.25rem; }
 .hybrid-band-eyebrow { font-family: var(--font-mono); font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--gray-700); font-weight: 500; display: block; margin-bottom: 0.375rem; }
 .hybrid-band-desc { font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 300; font-style: italic; color: var(--gray-700); line-height: 1.45; margin: 0; }
+
+/* White nav card segment — 350px fixed, connected visually between bands */
+.hybrid-nav-segment { flex: 0 0 350px; width: 350px; order: -1; background: var(--white); border: 1px solid var(--gray-200); padding: 1.25rem 1.5rem; box-shadow: var(--shadow-md); }
+.hybrid-band:nth-child(2) .hybrid-nav-segment { border-radius: 0.75rem 0.75rem 0 0; }
+.hybrid-band:nth-child(5) .hybrid-nav-segment { border-radius: 0 0 0.75rem 0.75rem; border-top: none; }
+.hybrid-band:nth-child(3) .hybrid-nav-segment { border-radius: 0; border-top: none; border-bottom: none; }
+.hybrid-band:nth-child(4) .hybrid-nav-segment { border-radius: 0; border-top: none; padding-top: 0; }
+
 .hybrid-l1 { margin-bottom: 0.875rem; }
 .hybrid-l1:last-child { margin-bottom: 0; }
 .hybrid-l1-name { font-size: 0.9375rem; color: var(--gray-900); font-weight: 500; padding: 0.375rem 0; }
 .hybrid-l2 { list-style: none; padding: 0; margin: 0.25rem 0 0 1.25rem; border-left: 1px solid var(--gray-200); }
 .hybrid-l2 li { font-size: 0.875rem; color: var(--gray-900); font-weight: 300; padding: 0.3125rem 0.875rem; }
+
+/* legacy — replaced */
+.hybrid-band-card { display: none; }
+.hybrid-row { display: none; }
 
 /* TOGAF section */
 .togaf-container { display: flex; align-items: center; gap: 2.5rem; margin: 1.5rem 0; }
@@ -179,7 +200,23 @@ section.block + section.block { padding-top: 2.5rem; }
 .togaf-body strong { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; color: var(--infinite-blue); display: block; margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.05em; }
 .togaf-body span { font-size: 0.875rem; color: var(--gray-900); font-weight: 300; line-height: 1.45; }
 
-footer { padding: 3rem 0 2rem; text-align: center; font-size: .75rem; color: var(--gray-700); font-weight: 300; border-top: 1px solid var(--gray-200); margin-top: 2rem; }
+/* Role-based nav comparison */
+.role-compare-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 0.5rem; align-items: start; }
+.role-col { display: flex; flex-direction: column; gap: 1rem; }
+.role-col-header { padding: 0 0.25rem; }
+.role-badge { display: inline-flex; align-items: center; gap: 0.375rem; font-family: var(--font-mono); font-size: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.25rem 0.625rem; border-radius: var(--radius-full); margin-bottom: 0.75rem; }
+.role-badge--ea { background: rgba(3,45,66,0.08); color: var(--infinite-blue); }
+.role-badge--ao { background: rgba(20,184,166,0.1); color: var(--teal-700); }
+.role-nav-title { font-size: 1rem; font-weight: 700; color: var(--infinite-blue); margin-bottom: 0.25rem; letter-spacing: -0.01em; }
+.role-nav-desc { font-size: 0.8125rem; font-weight: 300; color: var(--gray-500); line-height: 1.45; }
+.role-nav-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-md); box-shadow: var(--shadow-md); overflow: hidden; }
+.role-nav-body { padding: 0 1.5rem; }
+.role-band { padding-top: 1.25rem; padding-bottom: 0; }
+.role-band:first-child { padding-top: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--gray-200); margin-left: -1.5rem; margin-right: -1.5rem; padding-left: 1.5rem; padding-right: 1.5rem; }
+.role-band:nth-last-child(2) { padding-bottom: 1.25rem; }
+.role-band:last-child { padding-top: 1.25rem; padding-bottom: 1.25rem; border-top: 1px solid var(--gray-200); margin-left: -1.5rem; margin-right: -1.5rem; padding-left: 1.5rem; padding-right: 1.5rem; }
+.role-band-label { font-family: var(--font-mono); font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--gray-700); font-weight: 500; display: block; margin-bottom: 0.5rem; padding-top: 0.75rem; }
+@media (max-width: 720px) { .role-compare-grid { grid-template-columns: 1fr; } }
 
 @media (max-width: 720px) {
   h1 { font-size: 2.25rem; }
@@ -187,8 +224,10 @@ footer { padding: 3rem 0 2rem; text-align: center; font-size: .75rem; color: var
   .mode-meta { flex-direction: column; gap: .75rem; }
   .togaf-container { flex-direction: column; align-items: stretch; gap: 1.5rem; }
   .togaf-pyramid { max-width: 240px; margin: 0 auto; }
-  .hybrid-row { grid-template-columns: 1fr; gap: 0.75rem; }
+  .hybrid-band { flex-direction: column; gap: 0.75rem; }
   .hybrid-row-label { padding-top: 0; }
+  .hybrid-band:nth-child(2) .hybrid-nav-segment { border-radius: 0.75rem 0.75rem 0 0; }
+  .hybrid-band:nth-child(5) .hybrid-nav-segment { border-radius: 0 0 0.75rem 0.75rem; }
 }
 </style>
 </head>
@@ -211,6 +250,7 @@ footer { padding: 3rem 0 2rem; text-align: center; font-size: .75rem; color: var
     <button class="tab-btn active" data-tab="entities">EA entities</button>
     <button class="tab-btn" data-tab="failure">Why pure intent-based fails</button>
     <button class="tab-btn" data-tab="hybrid">Proposed hybrid navigation</button>
+    <button class="tab-btn" data-tab="roles">Role-based navigation</button>
   </div>
 
   <div class="tab-panel active" id="tab-entities">
@@ -220,53 +260,92 @@ footer { padding: 3rem 0 2rem; text-align: center; font-size: .75rem; color: var
     <p class="section-intro">An EA touches at least seven distinct entity types in this workspace. Any new IA has to make peace with that variety.</p>
 
     <div class="entity-grid">
-      <div class="entity-row">
+      <div class="entity-row" data-for="app">
         <div class="entity-num">01</div>
         <div class="entity-body">
           <strong data-entity="app">Business applications</strong>
           <span>Apps in the portfolio — health, lifecycle stage, ownership, dependencies.</span>
+          <div class="entity-intents">
+            <span class="intent-step">Map to caps</span><span class="intent-arrow">→</span>
+            <span class="intent-step">Build roadmap</span><span class="intent-arrow">→</span>
+            <span class="intent-step">Rationalize</span><span class="intent-arrow">→</span>
+            <span class="intent-step">Monitor health</span>
+          </div>
         </div>
       </div>
-      <div class="entity-row">
+      <div class="entity-row" data-for="bus">
         <div class="entity-num">02</div>
         <div class="entity-body">
           <strong data-entity="bus">Business capabilities</strong>
           <span>What the business does, mapped to the apps that enable it.</span>
+          <div class="entity-intents">
+            <span class="intent-step">Map to apps</span><span class="intent-arrow">→</span>
+            <span class="intent-step">Identify gaps</span><span class="intent-arrow">→</span>
+            <span class="intent-step">Plan coverage</span>
+          </div>
         </div>
       </div>
-      <div class="entity-row">
+      <div class="entity-row" data-for="prod">
         <div class="entity-num">03</div>
         <div class="entity-body">
           <strong data-entity="prod">Product capability</strong>
           <span>Features and functions a product delivers, mapped to the business capabilities they enable.</span>
+          <div class="entity-intents">
+            <span class="intent-step">Map to apps</span><span class="intent-arrow">→</span>
+            <span class="intent-step">Track adoption</span><span class="intent-arrow">→</span>
+            <span class="intent-step">Assess coverage</span>
+          </div>
         </div>
       </div>
-      <div class="entity-row">
+      <div class="entity-row" data-for="debt">
         <div class="entity-num">04</div>
         <div class="entity-body">
           <strong data-entity="debt">Technical debt</strong>
           <span>Outdated tech, EOL exposure, modernization candidates.</span>
+          <div class="entity-intents">
+            <span class="intent-step">Identify</span><span class="intent-arrow">→</span>
+            <span class="intent-step">Prioritize</span><span class="intent-arrow">→</span>
+            <span class="intent-step">Assign</span><span class="intent-arrow">→</span>
+            <span class="intent-step">Track progress</span>
+          </div>
         </div>
       </div>
-      <div class="entity-row">
+      <div class="entity-row" data-for="trm">
         <div class="entity-num">05</div>
         <div class="entity-body">
           <strong data-entity="trm">TRM products</strong>
           <span>Technology Reference Model — standards catalog, lifecycle, usage.</span>
+          <div class="entity-intents">
+            <span class="intent-step">Catalog</span><span class="intent-arrow">→</span>
+            <span class="intent-step">Set standards</span><span class="intent-arrow">→</span>
+            <span class="intent-step">Track lifecycle</span><span class="intent-arrow">→</span>
+            <span class="intent-step">Flag risk</span>
+          </div>
         </div>
       </div>
-      <div class="entity-row">
+      <div class="entity-row" data-for="arb">
         <div class="entity-num">06</div>
         <div class="entity-body">
           <strong data-entity="arb">ARB requests</strong>
           <span>Architecture changes pending review, approval, or rejection.</span>
+          <div class="entity-intents">
+            <span class="intent-step">Submit</span><span class="intent-arrow">→</span>
+            <span class="intent-step">Review</span><span class="intent-arrow">→</span>
+            <span class="intent-step">Approve / Reject</span><span class="intent-arrow">→</span>
+            <span class="intent-step">Track</span>
+          </div>
         </div>
       </div>
-      <div class="entity-row">
+      <div class="entity-row" data-for="data">
         <div class="entity-num">07</div>
         <div class="entity-body">
           <strong data-entity="data">Data certification records</strong>
           <span>Periodic validation of data quality, ownership, and accuracy.</span>
+          <div class="entity-intents">
+            <span class="intent-step">Create policies</span><span class="intent-arrow">→</span>
+            <span class="intent-step">Certify</span><span class="intent-arrow">→</span>
+            <span class="intent-step">Track progress</span>
+          </div>
         </div>
       </div>
     </div>
@@ -598,110 +677,102 @@ footer { padding: 3rem 0 2rem; text-align: center; font-size: .75rem; color: var
 
     <div class="hybrid-annotated">
       <div class="hybrid-annotated-header">
-        <div class="eyebrow">Proposed · Intent + entity hybrid</div>
         <h3 class="nav-card-title">Hybrid navigation</h3>
         <p class="nav-card-desc">Four visual bands separating global triage, focused-session deep work, workbench shortcuts, and personalized favorites.</p>
       </div>
 
-      <div class="hybrid-band-card">
-
-        <div class="hybrid-row">
-          <div class="hybrid-row-label">
-            <span class="hybrid-band-eyebrow">Global</span>
-            <p class="hybrid-band-desc">Clear-the-plate scan of priorities, approvals, and items needing attention from across all entity types.</p>
+      <div class="hybrid-band">
+        <div class="hybrid-row-label">
+          <span class="hybrid-band-eyebrow">Global</span>
+          <p class="hybrid-band-desc">Clear-the-plate scan of priorities, approvals, and items needing attention from across all entity types.</p>
+        </div>
+        <div class="hybrid-nav-segment">
+          <div class="hybrid-l1">
+            <div class="hybrid-l1-name">Intelligent home</div>
           </div>
-          <div>
-            <div class="hybrid-l1">
-              <div class="hybrid-l1-name">Intelligent home</div>
-            </div>
-            <div class="hybrid-l1">
-              <div class="hybrid-l1-name">Agents</div>
-            </div>
-            <div class="hybrid-l1">
-              <div class="hybrid-l1-name">Notifications</div>
-            </div>
+          <div class="hybrid-l1">
+            <div class="hybrid-l1-name">Agents</div>
+          </div>
+          <div class="hybrid-l1">
+            <div class="hybrid-l1-name">Notifications</div>
           </div>
         </div>
+      </div>
 
-        <div class="hybrid-row hybrid-row--bordered">
-          <div class="hybrid-row-label">
-            <span class="hybrid-band-eyebrow">Focused sessions</span>
-            <p class="hybrid-band-desc">Deep work, organized by TOGAF architecture domain.</p>
+      <div class="hybrid-band">
+        <div class="hybrid-row-label">
+          <span class="hybrid-band-eyebrow">Focused sessions</span>
+          <p class="hybrid-band-desc">Deep work, organized by TOGAF architecture domain.</p>
+        </div>
+        <div class="hybrid-nav-segment">
+          <div class="hybrid-l1">
+            <div class="hybrid-l1-name">Business portfolio</div>
+            <ul class="hybrid-l2">
+              <li>Business capabilities mapping</li>
+            </ul>
           </div>
-          <div>
-            <div class="hybrid-l1">
-              <div class="hybrid-l1-name">Business portfolio</div>
-              <ul class="hybrid-l2">
-                <li>Business capabilities mapping</li>
-              </ul>
-            </div>
-
-            <div class="hybrid-l1">
-              <div class="hybrid-l1-name">Applications portfolio</div>
-              <ul class="hybrid-l2">
-                <li>Product capabilities</li>
-                <li>Business applications</li>
-                <li>Monitor health</li>
-                <li>Build roadmap</li>
-                <li>Rationalize applications</li>
-              </ul>
-            </div>
-
-            <div class="hybrid-l1">
-              <div class="hybrid-l1-name">Technology portfolio</div>
-              <ul class="hybrid-l2">
-                <li>Technical debt</li>
-                <li>Technology usage</li>
-                <li>Technology standards</li>
-                <li>Shadow IT discovery</li>
-              </ul>
-            </div>
-
-            <div class="hybrid-l1">
-              <div class="hybrid-l1-name">Governance</div>
-              <ul class="hybrid-l2">
-                <li>Architectural Review Board</li>
-                <li>Data certification</li>
-              </ul>
-            </div>
+          <div class="hybrid-l1">
+            <div class="hybrid-l1-name">Applications portfolio</div>
+            <ul class="hybrid-l2">
+              <li>Product capabilities</li>
+              <li>Business applications</li>
+              <li>Monitor health</li>
+              <li>Build roadmap</li>
+              <li>Rationalize applications</li>
+            </ul>
+          </div>
+          <div class="hybrid-l1">
+            <div class="hybrid-l1-name">Technology portfolio</div>
+            <ul class="hybrid-l2">
+              <li>Technical debt</li>
+              <li>Technology usage</li>
+              <li>Technology standards</li>
+              <li>Shadow IT discovery</li>
+            </ul>
+          </div>
+          <div class="hybrid-l1">
+            <div class="hybrid-l1-name">Governance</div>
+            <ul class="hybrid-l2">
+              <li>Architectural Review Board</li>
+              <li>Data certification</li>
+            </ul>
           </div>
         </div>
+      </div>
 
-        <div class="hybrid-row">
-          <div class="hybrid-row-label">
-            <span class="hybrid-band-eyebrow">Workbench</span>
-            <p class="hybrid-band-desc">Tools embed inside relevant workflows — these are just shortcuts.</p>
-          </div>
-          <div>
-            <div class="hybrid-l1">
-              <div class="hybrid-l1-name">Workbench</div>
-              <ul class="hybrid-l2">
-                <li>Modeling</li>
-                <li>Architectural analyzer</li>
-                <li>Architectural artifacts</li>
-              </ul>
-            </div>
+      <div class="hybrid-band">
+        <div class="hybrid-row-label">
+          <span class="hybrid-band-eyebrow">Workbench</span>
+          <p class="hybrid-band-desc">Tools embed inside relevant workflows — these are just shortcuts.</p>
+        </div>
+        <div class="hybrid-nav-segment">
+          <div class="hybrid-l1">
+            <div class="hybrid-l1-name">Workbench</div>
+            <ul class="hybrid-l2">
+              <li>Modeling</li>
+              <li>Architectural analyzer</li>
+              <li>Architectural artifacts</li>
+            </ul>
           </div>
         </div>
+      </div>
 
-        <div class="hybrid-row hybrid-row--bordered">
-          <div class="hybrid-row-label">
-            <span class="hybrid-band-eyebrow">Favorites</span>
-            <p class="hybrid-band-desc">Personalized shortcuts the user has pinned — projects, workflows, or destinations they visit often.</p>
+      <div class="hybrid-band">
+        <div class="hybrid-row-label">
+          <span class="hybrid-band-eyebrow">Favorites</span>
+          <p class="hybrid-band-desc">Personalized shortcuts the user has pinned — projects, workflows, or destinations they visit often.</p>
+        </div>
+        <div class="hybrid-nav-segment">
+          <div class="hybrid-l1">
+            <div class="hybrid-l1-name">My projects</div>
           </div>
-          <div>
-            <div class="hybrid-l1">
-              <div class="hybrid-l1-name">My projects</div>
-            </div>
-            <div class="hybrid-l1">
-              <div class="hybrid-l1-name">Demand planning</div>
-            </div>
-            <div class="hybrid-l1">
-              <div class="hybrid-l1-name">AI intake tracking</div>
-            </div>
+          <div class="hybrid-l1">
+            <div class="hybrid-l1-name">Demand planning</div>
+          </div>
+          <div class="hybrid-l1">
+            <div class="hybrid-l1-name">AI intake tracking</div>
           </div>
         </div>
-
       </div>
     </div>
 
@@ -719,6 +790,172 @@ footer { padding: 3rem 0 2rem; text-align: center; font-size: .75rem; color: var
         <strong>Setup</strong> moves to a settings menu rather than primary nav.
       </p>
     </div>
+  </section>
+
+  <div class="tab-next-wrap">
+    <button class="tab-next-btn" data-tab="roles">
+      Role-based navigation
+      <span aria-hidden="true">→</span>
+    </button>
+  </div>
+
+  </div>
+
+  <div class="tab-panel" id="tab-roles">
+
+  <section class="block">
+    <h2>Navigation by role</h2>
+    <p class="section-intro">The same underlying data model, surfaced differently depending on who's looking at it. An Enterprise Architect needs the full portfolio picture. An Application Owner needs depth on their slice — not the noise of everything else.</p>
+
+    <div class="role-compare-grid">
+
+      <!-- Enterprise Architect -->
+      <div class="role-col">
+        <div class="role-col-header">
+          <span class="role-badge role-badge--ea">Enterprise Architect</span>
+          <div class="role-nav-title">Full portfolio view</div>
+          <p class="role-nav-desc">Sees the entire estate across all domains. Owns the strategy, standards, and cross-cutting governance.</p>
+        </div>
+        <div class="role-nav-card">
+          <div class="role-nav-body">
+
+            <div class="role-band">
+              <div class="hybrid-l1"><div class="hybrid-l1-name">Intelligent home</div></div>
+              <div class="hybrid-l1"><div class="hybrid-l1-name">Agents</div></div>
+              <div class="hybrid-l1" style="margin-bottom:0"><div class="hybrid-l1-name">Notifications</div></div>
+            </div>
+
+            <div class="role-band">
+              <div class="hybrid-l1">
+                <div class="hybrid-l1-name">Business portfolio</div>
+                <ul class="hybrid-l2"><li>Business capabilities mapping</li></ul>
+              </div>
+              <div class="hybrid-l1">
+                <div class="hybrid-l1-name">Applications portfolio</div>
+                <ul class="hybrid-l2">
+                  <li>Product capabilities</li>
+                  <li>Business applications</li>
+                  <li>Monitor health</li>
+                  <li>Build roadmap</li>
+                  <li>Rationalize applications</li>
+                </ul>
+              </div>
+              <div class="hybrid-l1">
+                <div class="hybrid-l1-name">Technology portfolio</div>
+                <ul class="hybrid-l2">
+                  <li>Technical debt</li>
+                  <li>Technology usage</li>
+                  <li>Technology standards</li>
+                  <li>Shadow IT discovery</li>
+                </ul>
+              </div>
+              <div class="hybrid-l1" style="margin-bottom:0">
+                <div class="hybrid-l1-name">Governance</div>
+                <ul class="hybrid-l2">
+                  <li>Architectural Review Board</li>
+                  <li>Data certification</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="role-band">
+              <div class="hybrid-l1" style="margin-bottom:0">
+                <div class="hybrid-l1-name">Workbench</div>
+                <ul class="hybrid-l2">
+                  <li>Modeling</li>
+                  <li>Architectural analyzer</li>
+                  <li>Architectural artifacts</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="role-band">
+              <div class="hybrid-l1"><div class="hybrid-l1-name">My projects</div></div>
+              <div class="hybrid-l1"><div class="hybrid-l1-name">Demand planning</div></div>
+              <div class="hybrid-l1" style="margin-bottom:0"><div class="hybrid-l1-name">AI intake tracking</div></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Application Owner -->
+      <div class="role-col">
+        <div class="role-col-header">
+          <span class="role-badge role-badge--ao">Application Owner</span>
+          <div class="role-nav-title">My applications view</div>
+          <p class="role-nav-desc">Owns 10–12 applications. Needs health, lifecycle, debt, and governance scoped tightly to their portfolio — not the entire estate.</p>
+        </div>
+        <div class="role-nav-card">
+          <div class="role-nav-body">
+
+            <div class="role-band">
+              <div class="hybrid-l1"><div class="hybrid-l1-name">Intelligent home</div></div>
+              <div class="hybrid-l1"><div class="hybrid-l1-name">Agents</div></div>
+              <div class="hybrid-l1" style="margin-bottom:0"><div class="hybrid-l1-name">Notifications</div></div>
+            </div>
+
+            <div class="role-band">
+              <div class="hybrid-l1" style="margin-bottom:0">
+                <div class="hybrid-l1-name">My applications</div>
+                <ul class="hybrid-l2">
+                  <li>Health &amp; status</li>
+                  <li>Lifecycle &amp; roadmap</li>
+                  <li>Dependencies map</li>
+                  <li>Costs &amp; usage</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="role-band">
+              <div class="hybrid-l1" style="margin-bottom:0">
+                <div class="hybrid-l1-name">Technical debt</div>
+                <ul class="hybrid-l2">
+                  <li>Debt by application</li>
+                  <li>EOL &amp; risk exposure</li>
+                  <li>Modernization candidates</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="role-band">
+              <div class="hybrid-l1">
+                <div class="hybrid-l1-name">My ARB requests</div>
+                <ul class="hybrid-l2">
+                  <li>Pending approval</li>
+                  <li>Approved &amp; rejected</li>
+                </ul>
+              </div>
+              <div class="hybrid-l1" style="margin-bottom:0">
+                <div class="hybrid-l1-name">Data certifications</div>
+                <ul class="hybrid-l2">
+                  <li>Due for review</li>
+                  <li>Certified records</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="role-band">
+              <div class="hybrid-l1"><div class="hybrid-l1-name">My projects</div></div>
+              <div class="hybrid-l1" style="margin-bottom:0"><div class="hybrid-l1-name">My pinned apps</div></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="callout" style="margin-top: 1.5rem;">
+      <div class="callout-label">What changes between roles</div>
+      <p>
+        <strong>Scope:</strong> The EA sees the full estate; the Application Owner sees only their slice — every list, every metric, every queue is pre-filtered to their applications.<br>
+        <strong>Depth over breadth:</strong> The App Owner gets deeper sub-navigation inside Applications and Technical debt, because that's where they spend their entire time.<br>
+        <strong>No strategy layer:</strong> Business capabilities, TRM standards, shadow IT discovery, and modeling tools are hidden — they belong to the EA's remit, not the App Owner's.<br>
+        <strong>Governance is narrowed:</strong> ARB and Data certification still appear, but scoped to requests and records tied to their applications only.
+      </p>
+    </div>
+
   </section>
 
   </div>
