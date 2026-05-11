@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Enterprise Architecture — Navigation Exploration</title>
+<style>
+@font-face { font-family: 'ServiceNow Sans'; src: url('https://www.servicenow.com/etc.clientlibs/ds/clientlibs/clientlib-arc-commons/resources/fonts/ServiceNowSans-Light.woff2') format('woff2'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'ServiceNow Sans'; src: url('https://www.servicenow.com/etc.clientlibs/ds/clientlibs/clientlib-arc-commons/resources/fonts/ServiceNowSans-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'ServiceNow Sans'; src: url('https://www.servicenow.com/etc.clientlibs/ds/clientlibs/clientlib-arc-commons/resources/fonts/ServiceNowSans-Book.woff2') format('woff2'); font-weight: 450; font-style: normal; font-display: swap; }
+@font-face { font-family: 'ServiceNow Sans'; src: url('https://www.servicenow.com/etc.clientlibs/ds/clientlibs/clientlib-arc-commons/resources/fonts/ServiceNowSans-Medium.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'ServiceNow Sans'; src: url('https://www.servicenow.com/etc.clientlibs/ds/clientlibs/clientlib-arc-commons/resources/fonts/ServiceNowSans-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'ServiceNow Sans Mono'; src: url('https://www.servicenow.com/etc.clientlibs/ds/clientlibs/clientlib-arc-commons/resources/fonts/ServiceNowSansMono-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+
+:root {
+  --infinite-blue: #032D42;
+  --wasabi-green: #63DF4E;
+  --white: #FFFFFF;
+  --icon-bg: #2A4F62;
+  --gray-50: #F9FAFB;
+  --gray-100: #F3F4F6;
+  --gray-200: #E5E7EB;
+  --gray-400: #9CA3AF;
+  --gray-500: #6B7280;
+  --gray-700: #374151;
+  --gray-900: #000000;
+  --teal-500: #14B8A6;
+  --teal-700: #0F766E;
+  --font-sans: 'ServiceNow Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  --font-mono: 'ServiceNow Sans Mono', 'Consolas', 'Monaco', 'Courier New', monospace;
+  --radius-sm: 0.5rem;
+  --radius-md: 1rem;
+  --radius-full: 9999px;
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -1px rgba(0,0,0,0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -2px rgba(0,0,0,0.04);
+  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.08), 0 10px 10px -5px rgba(0,0,0,0.03);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); font-weight: 300; background: #E1F2FC; color: var(--gray-900); line-height: 1.5; min-height: 100vh; }
+.container { max-width: 56rem; margin: 0 auto; padding: 0 2rem; }
+
+header { padding: 1.5rem 0; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--gray-200); }
+.pill-badge { background: var(--wasabi-green); color: var(--infinite-blue); padding: .375rem 1rem; border-radius: var(--radius-full); font-family: var(--font-mono); font-size: .6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+
+.eyebrow { font-family: var(--font-mono); font-size: .75rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--infinite-blue); margin-bottom: 1rem; font-weight: 600; }
+h1 { font-weight: 700; font-size: 3rem; line-height: 1.2; margin-bottom: 1.25rem; letter-spacing: -0.01em; color: var(--infinite-blue); }
+h2 { font-weight: 700; font-size: 1.75rem; line-height: 1.05; margin-bottom: 1rem; letter-spacing: -0.01em; color: var(--infinite-blue); }
+h3 { font-weight: 700; font-size: 1.125rem; line-height: 1.2; letter-spacing: -0.01em; color: var(--infinite-blue); }
+p { font-weight: 300; line-height: 1.55; color: var(--gray-900); }
+
+.lede { font-size: 1.125rem; color: var(--gray-900); font-weight: 300; max-width: 38rem; }
+
+section.block { padding: 2rem 0 0.5rem; }
+section.block + section.block { padding-top: 2.5rem; }
+
+.card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-md); padding: 1.75rem; box-shadow: var(--shadow-md); transition: all .2s ease; }
+.card:hover { transform: translateY(-2px); box-shadow: var(--shadow-xl); }
+
+.icon-box { background: var(--icon-bg); width: 40px; height: 40px; min-width: 40px; min-height: 40px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.icon-box img { width: 20px; height: 20px; display: block; object-fit: contain; }
+
+.entity-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-top: 0.5rem; }
+.entity-row { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem 1.25rem; background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); }
+.entity-num { font-family: var(--font-mono); font-size: .75rem; color: var(--infinite-blue); font-weight: 600; padding-top: .15rem; min-width: 1.5rem; }
+.entity-body strong { font-weight: 500; font-size: .9375rem; color: var(--gray-900); display: block; margin-bottom: .25rem; }
+.entity-body span { font-size: .8125rem; color: var(--gray-900); font-weight: 300; line-height: 1.4; }
+
+.modes-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 0.5rem; }
+.mode-meta { display: flex; gap: 1.25rem; margin: 1rem 0 1.25rem; padding: .75rem 1rem; background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); }
+.mode-meta-item { flex: 1; }
+.mode-meta-label { font-family: var(--font-mono); font-size: .625rem; text-transform: uppercase; letter-spacing: .04em; color: var(--gray-700); margin-bottom: .25rem; font-weight: 500; }
+.mode-meta-value { font-size: .875rem; color: var(--gray-900); font-weight: 500; }
+.mode-quote { font-style: italic; color: var(--infinite-blue); font-size: 1rem; font-weight: 500; margin: 1rem 0 1.25rem; padding-left: 1rem; border-left: 3px solid var(--infinite-blue); }
+.mode-list { list-style: none; padding: 0; margin: 0; }
+.mode-list li { font-size: .9375rem; font-weight: 300; line-height: 1.45; padding: .5rem 0; padding-left: 1.25rem; position: relative; border-bottom: 1px solid var(--gray-200); color: var(--gray-900); }
+.mode-list li:last-child { border-bottom: none; }
+.mode-list li::before { content: ""; position: absolute; left: 0; top: .9rem; width: 6px; height: 6px; border-radius: 50%; background: var(--infinite-blue); }
+.mode-list li strong { color: var(--gray-900); }
+
+.callout { border-radius: 0 var(--radius-md) var(--radius-md) 0; padding: 1.25rem 1.5rem; margin: 1rem 0; border-left: 3px solid; background: rgba(99,223,78,.08); border-color: var(--wasabi-green); }
+.callout-label { font-family: var(--font-mono); font-size: .6875rem; text-transform: uppercase; letter-spacing: .04em; color: var(--infinite-blue); margin-bottom: .5rem; font-weight: 600; }
+.callout p { font-size: .9375rem; line-height: 1.5; font-weight: 300; color: var(--gray-900); }
+
+.rationale-grid { display: grid; grid-template-columns: 1fr; gap: 0.75rem; margin-top: 0.5rem; }
+.rationale-item { display: flex; gap: 1.25rem; padding: 1.25rem 1.5rem; background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); }
+.rationale-num { font-family: var(--font-mono); font-size: 1.5rem; color: var(--infinite-blue); font-weight: 700; line-height: 1; min-width: 2.5rem; }
+.rationale-body h4 { font-size: 1rem; font-weight: 500; margin-bottom: .25rem; color: var(--gray-900); letter-spacing: -0.01em; }
+.rationale-body p { font-size: .9375rem; color: var(--gray-900); font-weight: 300; line-height: 1.5; }
+
+.section-intro { color: var(--gray-900); margin-bottom: 1rem; font-size: .9375rem; font-weight: 300; }
+
+/* Navigation comparison */
+.nav-compare-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 0.5rem; align-items: start; }
+.nav-card-title { font-size: 1.25rem; font-weight: 700; color: var(--infinite-blue); letter-spacing: -0.01em; margin-top: 0.5rem; margin-bottom: 0.5rem; }
+.nav-card-desc { font-size: 0.875rem; color: var(--gray-900); font-weight: 300; line-height: 1.5; margin-bottom: 1.25rem; }
+.nav-group-label { font-family: var(--font-mono); font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--gray-700); font-weight: 500; margin: 1.25rem 0 0.5rem; padding-bottom: 0.375rem; border-bottom: 1px solid var(--gray-200); }
+.nav-group-label:first-of-type { margin-top: 0; }
+.nav-group-label .nav-group-note { color: var(--gray-700); font-weight: 400; text-transform: none; letter-spacing: 0; opacity: 0.7; margin-left: 0.25rem; }
+.nav-list { list-style: none; padding: 0; margin: 0; }
+.nav-list li { font-size: 0.9375rem; color: var(--gray-900); font-weight: 300; padding: 0.5rem 0.75rem; border-radius: 0.375rem; }
+.nav-list li:hover { background: rgba(3, 45, 66, 0.04); }
+.nav-list-embedded li { color: var(--gray-700); font-style: italic; }
+.callout p strong { font-weight: 500; color: var(--infinite-blue); }
+
+/* Entity color coding for the pure intent-based strawman */
+.entity-legend { display: flex; flex-wrap: wrap; gap: 0.625rem 1rem; margin-top: 1rem; padding: 0.75rem 1rem; background: rgba(225, 242, 252, 0.6); border-radius: 0.5rem; border: 1px solid var(--gray-200); }
+.legend-item { font-family: var(--font-mono); font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--gray-700); display: inline-flex; align-items: center; gap: 0.375rem; font-weight: 500; }
+.legend-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+.nav-list li[data-entity] { position: relative; padding-left: 1.625rem; }
+.nav-list li[data-entity]::before { content: ""; position: absolute; left: 0.625rem; top: 50%; transform: translateY(-50%); width: 9px; height: 9px; border-radius: 50%; }
+.nav-list li[data-entity="bus"]::before { background: #52B8FF; }
+.nav-list li[data-entity="app"]::before { background: #14B8A6; }
+.nav-list li[data-entity="prod"]::before { background: #7661FF; }
+.nav-list li[data-entity="debt"]::before { background: #F87171; }
+.nav-list li[data-entity="trm"]::before { background: #BF71F2; }
+.nav-list li[data-entity="arb"]::before { background: #63DF4E; }
+.nav-list li[data-entity="data"]::before { background: #FBBF24; }
+
+/* Entity color dots in the Entity types in scope section */
+.entity-body strong[data-entity]::before {
+  content: "";
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+  vertical-align: 1px;
+}
+.entity-body strong[data-entity="app"]::before { background: #14B8A6; }
+.entity-body strong[data-entity="bus"]::before { background: #52B8FF; }
+.entity-body strong[data-entity="prod"]::before { background: #7661FF; }
+.entity-body strong[data-entity="debt"]::before { background: #F87171; }
+.entity-body strong[data-entity="trm"]::before { background: #BF71F2; }
+.entity-body strong[data-entity="arb"]::before { background: #63DF4E; }
+.entity-body strong[data-entity="data"]::before { background: #FBBF24; }
+
+/* Tab navigation */
+.tabs { display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; border-bottom: 2px solid var(--gray-200); margin: 1rem 0 2.5rem; }
+.tab-btn { padding: 0.875rem 0.25rem; font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 400; color: var(--gray-700); background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; margin-bottom: -2px; transition: color 0.15s, border-color 0.15s; letter-spacing: -0.005em; }
+.tab-btn:hover { color: var(--teal-700); }
+.tab-btn.active { color: var(--teal-700); font-weight: 700; border-bottom-color: var(--teal-500); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.tab-next-wrap { display: flex; justify-content: flex-end; margin: 3rem 0 1.5rem; padding-top: 2rem; border-top: 1px solid var(--gray-200); }
+.tab-next-btn { display: inline-flex; align-items: center; gap: 0.625rem; background: var(--teal-700); color: var(--white); padding: 0.75rem 1.5rem; border-radius: 9999px; border: none; font-family: var(--font-sans); font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: background 0.15s, transform 0.15s; }
+.tab-next-btn:hover { background: #115E59; transform: translateY(-1px); }
+.tab-next-btn span { display: inline-block; transition: transform 0.15s; }
+.tab-next-btn:hover span { transform: translateX(2px); }
+
+/* Hybrid nav annotated layout — single card with internal label column */
+.hybrid-annotated { max-width: 48rem; margin: 0 auto 1.5rem; }
+.hybrid-annotated-header { text-align: center; margin-bottom: 2rem; }
+.hybrid-annotated-header .nav-card-desc { max-width: 32rem; margin: 0 auto; }
+.hybrid-band-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: 0.75rem; box-shadow: var(--shadow-md); overflow: hidden; }
+.hybrid-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.5fr); gap: 2rem; padding: 1.5rem; align-items: start; }
+.hybrid-row--bordered { border-top: 1px solid var(--gray-200); }
+.hybrid-row + .hybrid-row:not(.hybrid-row--bordered) { padding-top: 0.25rem; }
+.hybrid-row-label { padding-top: 0.375rem; }
+.hybrid-band-eyebrow { font-family: var(--font-mono); font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--gray-700); font-weight: 500; display: block; margin-bottom: 0.375rem; }
+.hybrid-band-desc { font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 300; font-style: italic; color: var(--gray-700); line-height: 1.45; margin: 0; }
+.hybrid-l1 { margin-bottom: 0.875rem; }
+.hybrid-l1:last-child { margin-bottom: 0; }
+.hybrid-l1-name { font-size: 0.9375rem; color: var(--gray-900); font-weight: 500; padding: 0.375rem 0; }
+.hybrid-l2 { list-style: none; padding: 0; margin: 0.25rem 0 0 1.25rem; border-left: 1px solid var(--gray-200); }
+.hybrid-l2 li { font-size: 0.875rem; color: var(--gray-900); font-weight: 300; padding: 0.3125rem 0.875rem; }
+
+/* TOGAF section */
+.togaf-container { display: flex; align-items: center; gap: 2.5rem; margin: 1.5rem 0; }
+.togaf-pyramid { flex: 0 0 280px; }
+.togaf-pyramid svg { width: 100%; height: auto; display: block; }
+.togaf-descriptions { flex: 1; display: flex; flex-direction: column; gap: 0.625rem; }
+.togaf-row { display: flex; align-items: flex-start; gap: 1rem; padding: 0.875rem 1rem; background: var(--white); border: 1px solid var(--gray-200); border-radius: 0.5rem; border-left-width: 4px; }
+.togaf-row[data-layer="business"] { border-left-color: #032D42; }
+.togaf-row[data-layer="data"] { border-left-color: #1E5675; }
+.togaf-row[data-layer="application"] { border-left-color: #3B7FA0; }
+.togaf-row[data-layer="technology"] { border-left-color: #6BA4C4; }
+.togaf-num { font-family: var(--font-mono); font-size: 0.75rem; color: var(--infinite-blue); font-weight: 600; padding-top: 0.2rem; min-width: 1.5rem; }
+.togaf-body strong { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; color: var(--infinite-blue); display: block; margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.togaf-body span { font-size: 0.875rem; color: var(--gray-900); font-weight: 300; line-height: 1.45; }
+
+footer { padding: 3rem 0 2rem; text-align: center; font-size: .75rem; color: var(--gray-700); font-weight: 300; border-top: 1px solid var(--gray-200); margin-top: 2rem; }
+
+@media (max-width: 720px) {
+  h1 { font-size: 2.25rem; }
+  .entity-grid, .modes-grid, .nav-compare-grid { grid-template-columns: 1fr; }
+  .mode-meta { flex-direction: column; gap: .75rem; }
+  .togaf-container { flex-direction: column; align-items: stretch; gap: 1.5rem; }
+  .togaf-pyramid { max-width: 240px; margin: 0 auto; }
+  .hybrid-row { grid-template-columns: 1fr; gap: 0.75rem; }
+  .hybrid-row-label { padding-top: 0; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <svg xmlns="http://www.w3.org/2000/svg" width="132" height="20" viewBox="0 0 132 20"><path d="M32.022,6.391a5.626,5.626,0,0,0-3.61,1.3V6.523H25.119V19.35h3.425v-8.2a4.073,4.073,0,0,1,3.109-1.588,3.494,3.494,0,0,1,1.374.206V6.479a5.851,5.851,0,0,0-1.005-.088" fill="#032D42" fill-rule="evenodd"/><path d="M2.16,15.436a5.369,5.369,0,0,0,3.5,1.269c.922,0,1.633-.45,1.633-1.084,0-1.931-6.191-1.243-6.191-5.369,0-2.459,2.371-3.993,4.9-3.993a7.9,7.9,0,0,1,4.32,1.3L8.72,10.04a4.3,4.3,0,0,0-2.45-.872c-.948,0-1.739.37-1.739,1.031,0,1.666,6.192,1.005,6.192,5.448,0,2.46-2.4,3.967-5.085,3.967A8.815,8.815,0,0,1,.5,17.9Z" fill="#032D42" fill-rule="evenodd"/><path d="M23.657,12.817c0-3.57-2.5-6.558-6.034-6.558-3.794,0-6.218,3.12-6.218,6.691A6.4,6.4,0,0,0,18.1,19.614a6.919,6.919,0,0,0,5.243-2.3l-1.95-1.957a4.515,4.515,0,0,1-3.214,1.481A3.36,3.36,0,0,1,14.725,13.8h8.853A5.735,5.735,0,0,0,23.657,12.817Zm-8.774-1.533a2.775,2.775,0,0,1,2.74-2.248,2.552,2.552,0,0,1,2.53,2.248Z" fill="#032D42" fill-rule="evenodd"/><polygon points="41.19 14.351 44.694 6.523 48.252 6.523 42.376 19.35 40.005 19.35 34.129 6.523 37.686 6.523 41.19 14.351" fill="#032D42" fill-rule="evenodd"/><path d="M51.128.5A2.2,2.2,0,1,1,48.888,2.7,2.2,2.2,0,0,1,51.128.5" fill="#032D42" fill-rule="evenodd"/><rect x="49.415" y="6.523" width="3.425" height="12.827" fill="#032D42"/><path d="M67,16.731a6.766,6.766,0,0,1-5.8,2.883,6.68,6.68,0,1,1,.026-13.355,6.808,6.808,0,0,1,5.375,2.565l-2.424,2.142a3.7,3.7,0,0,0-2.951-1.534A3.433,3.433,0,0,0,57.78,12.95a3.383,3.383,0,0,0,3.531,3.49,3.741,3.741,0,0,0,3.056-1.692Z" fill="#032D42" fill-rule="evenodd"/><path d="M79.442,17.313a6.918,6.918,0,0,1-5.243,2.3,6.4,6.4,0,0,1-6.692-6.664c0-3.571,2.424-6.691,6.218-6.691,3.53,0,6.033,2.988,6.033,6.558a5.635,5.635,0,0,1-.079.979H70.826a3.36,3.36,0,0,0,3.452,3.041,4.52,4.52,0,0,0,3.215-1.481Zm-3.188-6.029a2.551,2.551,0,0,0-2.529-2.248,2.774,2.774,0,0,0-2.74,2.248Z" fill="#032D42" fill-rule="evenodd"/><path d="M81.12,19.35V6.523h3.293V7.554a5.625,5.625,0,0,1,3.609-1.295,5.747,5.747,0,0,1,4.427,2.063,6.482,6.482,0,0,1,1.317,4.5V19.35H90.341v-6.8a3.11,3.11,0,0,0-.764-2.407,2.69,2.69,0,0,0-1.923-.714,4.076,4.076,0,0,0-3.109,1.587V19.35Z" fill="#032D42" fill-rule="evenodd"/><path d="M102.586,6.259A7.5,7.5,0,0,0,97.419,19.21a1.481,1.481,0,0,0,1.926.1,5.355,5.355,0,0,1,6.394,0,1.485,1.485,0,0,0,1.937-.113,7.5,7.5,0,0,0-5.09-12.94M102.542,17.5a3.637,3.637,0,0,1-3.734-3.733,3.734,3.734,0,1,1,7.468,0,3.637,3.637,0,0,1-3.734,3.733" fill="#62d84e" fill-rule="evenodd"/><polygon points="116.788 19.35 114.237 19.35 109.15 6.523 112.57 6.523 115.359 13.853 118.094 6.523 120.952 6.523 123.662 13.853 126.475 6.523 129.896 6.523 124.809 19.35 122.258 19.35 119.523 12.046 116.788 19.35" fill="#032D42" fill-rule="evenodd"/><path d="M129.935,17.9h-.289v.543H129.4V16.957h.6a.476.476,0,0,1,.478.478.469.469,0,0,1-.295.432l.338.579h-.268Zm-.289-.219H130a.249.249,0,0,0,0-.5h-.351Z" fill="#032D42"/><path d="M129.9,16.348a1.379,1.379,0,1,1-1.378,1.379,1.381,1.381,0,0,1,1.378-1.379m0-.218a1.6,1.6,0,1,0,1.6,1.6,1.6,1.6,0,0,0-1.6-1.6Z" fill="#032D42"/></svg>
+    <span style="font-family: var(--font-sans); font-size: 0.875rem; font-weight: 300; color: var(--gray-500);">Emily Lin</span>
+  </header>
+
+  <section style="padding: 2rem 0 2.5rem;">
+    <h1>Enterprise Architecture -<br>Navigation Exploration</h1>
+    <p class="lede">
+      Exploring an intent-based redesign of the Enterprise Architect left navigation. Before we group anything, we have to be honest about the fact that EAs juggle many distinct entity types — and they don't always want to triage them the same way.
+    </p>
+  </section>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="entities">EA entities</button>
+    <button class="tab-btn" data-tab="failure">Why pure intent-based fails</button>
+    <button class="tab-btn" data-tab="hybrid">Proposed hybrid navigation</button>
+  </div>
+
+  <div class="tab-panel active" id="tab-entities">
+
+  <section class="block">
+    <h2>Entity types in scope</h2>
+    <p class="section-intro">An EA touches at least seven distinct entity types in this workspace. Any new IA has to make peace with that variety.</p>
+
+    <div class="entity-grid">
+      <div class="entity-row">
+        <div class="entity-num">01</div>
+        <div class="entity-body">
+          <strong data-entity="app">Business applications</strong>
+          <span>Apps in the portfolio — health, lifecycle stage, ownership, dependencies.</span>
+        </div>
+      </div>
+      <div class="entity-row">
+        <div class="entity-num">02</div>
+        <div class="entity-body">
+          <strong data-entity="bus">Business capabilities</strong>
+          <span>What the business does, mapped to the apps that enable it.</span>
+        </div>
+      </div>
+      <div class="entity-row">
+        <div class="entity-num">03</div>
+        <div class="entity-body">
+          <strong data-entity="prod">Product capability</strong>
+          <span>Features and functions a product delivers, mapped to the business capabilities they enable.</span>
+        </div>
+      </div>
+      <div class="entity-row">
+        <div class="entity-num">04</div>
+        <div class="entity-body">
+          <strong data-entity="debt">Technical debt</strong>
+          <span>Outdated tech, EOL exposure, modernization candidates.</span>
+        </div>
+      </div>
+      <div class="entity-row">
+        <div class="entity-num">05</div>
+        <div class="entity-body">
+          <strong data-entity="trm">TRM products</strong>
+          <span>Technology Reference Model — standards catalog, lifecycle, usage.</span>
+        </div>
+      </div>
+      <div class="entity-row">
+        <div class="entity-num">06</div>
+        <div class="entity-body">
+          <strong data-entity="arb">ARB requests</strong>
+          <span>Architecture changes pending review, approval, or rejection.</span>
+        </div>
+      </div>
+      <div class="entity-row">
+        <div class="entity-num">07</div>
+        <div class="entity-body">
+          <strong data-entity="data">Data certification records</strong>
+          <span>Periodic validation of data quality, ownership, and accuracy.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>The EA works in two distinct modes</h2>
+    <p class="section-intro">When you watch an EA's day, the interactions don't blur together — they split cleanly into reactive triage and deliberate, focused work. Each mode has different cognitive demands and deserves different UI treatment.</p>
+
+    <div class="modes-grid">
+
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem">
+          <div class="icon-box">
+            <img src="data:image/svg+xml;base64,PHN2ZyBpZD0iSWNvbnMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiB2aWV3Qm94PSIwIDAgMzIgMzIiPjxkZWZzPjxzdHlsZT4uY2xzLTF7ZmlsbDojZmZmO30uY2xzLTJ7ZmlsbDojNjJkODRlO30uY2xzLTN7ZmlsbDpub25lO308L3N0eWxlPjwvZGVmcz48cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0xOSwxQTEyLDEyLDAsMCwwLDguNDEsMTguNjRMMS41MywyNS41MkEzLjQ2LDMuNDYsMCwwLDAsLjUsMjhhMy40MiwzLjQyLDAsMCwwLDEsMi40NywzLjQ4LDMuNDgsMCwwLDAsNC45NCwwbDYuODktNi44OEExMiwxMiwwLDEsMCwxOSwxWk01LjA2LDI5LjA2YTEuNTMsMS41MywwLDAsMS0yLjEyLDAsMS41LDEuNSwwLDAsMSwwLTIuMTJsNi41OS02LjU5YTEyLjUxLDEyLjUxLDAsMCwwLDIuMTIsMi4xMlpNMTksMjNBMTAsMTAsMCwxLDEsMjksMTMsMTAsMTAsMCwwLDEsMTksMjNaIi8+PHBhdGggY2xhc3M9ImNscy0yIiBkPSJNMTQuNTQsOS43OGwtMi42OCwyLjQ5YTEsMSwwLDAsMCwwLDEuNDZsMi42OCwyLjQ5YTYuNTcsNi41NywwLDAsMCw4LjkyLDBsMi42OC0yLjQ5YTEsMSwwLDAsMCwwLTEuNDZMMjMuNDYsOS43OEE2LjU3LDYuNTcsMCwwLDAsMTQuNTQsOS43OFpNMTksMTVhMi4xNywyLjE3LDAsMCwxLTIuMjktMkEyLjE3LDIuMTcsMCwwLDEsMTksMTFhMi4xNywyLjE3LDAsMCwxLDIuMjksMkEyLjE3LDIuMTcsMCwwLDEsMTksMTVaIi8+PHJlY3QgY2xhc3M9ImNscy0zIiB3aWR0aD0iMzIiIGhlaWdodD0iMzIiLz48L3N2Zz4=" alt="Discover">
+          </div>
+          <h3>Clear my plate</h3>
+        </div>
+
+        <p class="mode-quote">"What needs me right now?"</p>
+
+        <div class="mode-meta">
+          <div class="mode-meta-item">
+            <div class="mode-meta-label">Time</div>
+            <div class="mode-meta-value">5–15 min</div>
+          </div>
+          <div class="mode-meta-item">
+            <div class="mode-meta-label">Trigger</div>
+            <div class="mode-meta-value">Interrupt-driven</div>
+          </div>
+          <div class="mode-meta-item">
+            <div class="mode-meta-label">Frequency</div>
+            <div class="mode-meta-value">Daily, multiple times</div>
+          </div>
+        </div>
+
+        <p style="font-size: .9375rem; color: var(--gray-900); font-weight: 300; margin-bottom: 1rem;">EA opens the workspace fresh and wants to see <em>everything</em> demanding their attention, ranked by urgency, regardless of entity type. An ARB approval next to a tech debt escalation next to a stakeholder ping. Inbox-like.</p>
+
+        <ul class="mode-list">
+          <li><strong style="font-weight: 500;">Mental model:</strong> unified inbox / triage queue</li>
+          <li><strong style="font-weight: 500;">Behavior:</strong> cross-entity scanning, fast decisions, single-item actions</li>
+          <li><strong style="font-weight: 500;">Best UI:</strong> mixed-entity queue, prioritized by urgency, decision-ready cards</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem">
+          <div class="icon-box">
+            <img src="data:image/svg+xml;base64,PHN2ZyBpZD0iSWNvbnMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiB2aWV3Qm94PSIwIDAgMzIgMzIiPjxkZWZzPjxzdHlsZT4uY2xzLTF7ZmlsbDojZmZmO30uY2xzLTJ7ZmlsbDojNjJkODRlO30uY2xzLTN7ZmlsbDpub25lO308L3N0eWxlPjwvZGVmcz48cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0xMy4xMSwxNS4yNWEzLDMsMCwxLDEsMy42NSwzLjY0LDMsMywwLDAsMS0uMjQuNzJMMTUuODYsMjFIMTZhNSw1LDAsMSwwLTUtNWMwLC4wNSwwLC4wOSwwLC4xNGwxLjM4LS42NkEzLDMsMCwwLDEsMTMuMTEsMTUuMjVaIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMTYsOGE4LDgsMCwwLDEsMCwxNiw3LjUxLDcuNTEsMCwwLDEtMS41MS0uMTVsLS44OCwxLjg1QTkuOSw5LjksMCwwLDAsMTYsMjYsMTAsMTAsMCwxLDAsNiwxNmE5Ljg0LDkuODQsMCwwLDAsLjMsMi4zOWwxLjg1LS44OEE3LjUxLDcuNTEsMCwwLDEsOCwxNiw4LDgsMCwwLDEsMTYsOFoiLz48cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0xNiwxQTE1LDE1LDAsMCwwLDEuNzIsMjAuNThsMS44My0uODdBMTMsMTMsMCwxLDEsMTYsMjlhMTIuNjYsMTIuNjYsMCwwLDEtMy43MS0uNTVsLS44NywxLjgzQTE1LDE1LDAsMSwwLDE2LDFaIi8+PHBhdGggY2xhc3M9ImNscy0yIiBkPSJNMTMuMjUsMTcuMjlsLTEyLjU4LDZhMS4xLDEuMSwwLDAsMCwuMTMsMmwzLjg4LDEuMjlhMS4xLDEuMSwwLDAsMSwuNjkuNjlsMS4zLDMuODlhMS4xLDEuMSwwLDAsMCwyLC4xMmw2LTEyLjU4QTEuMSwxLjEsMCwwLDAsMTMuMjUsMTcuMjlaIi8+PHJlY3QgY2xhc3M9ImNscy0zIiB3aWR0aD0iMzIiIGhlaWdodD0iMzIiLz48L3N2Zz4=" alt="Strategic">
+          </div>
+          <h3>Focused session</h3>
+        </div>
+
+        <p class="mode-quote">"Where am I taking this portfolio?"</p>
+
+        <div class="mode-meta">
+          <div class="mode-meta-item">
+            <div class="mode-meta-label">Time</div>
+            <div class="mode-meta-value">30–90 min</div>
+          </div>
+          <div class="mode-meta-item">
+            <div class="mode-meta-label">Trigger</div>
+            <div class="mode-meta-value">Calendar-blocked</div>
+          </div>
+          <div class="mode-meta-item">
+            <div class="mode-meta-label">Frequency</div>
+            <div class="mode-meta-value">Weekly to monthly</div>
+          </div>
+        </div>
+
+        <p style="font-size: .9375rem; color: var(--gray-900); font-weight: 300; margin-bottom: 1rem;">EA blocks deliberate time to drive a specific entity forward — running a monthly tech debt review, building a capability roadmap, or rationalizing the app portfolio. Wants depth, not breadth.</p>
+
+        <ul class="mode-list">
+          <li><strong style="font-weight: 500;">Mental model:</strong> studio / dedicated workspace</li>
+          <li><strong style="font-weight: 500;">Behavior:</strong> bulk operations, cross-entity context, modeling</li>
+          <li><strong style="font-weight: 500;">Best UI:</strong> entity-scoped deep workspace with filters, tools, planning canvases</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Why we need to design for both</h2>
+    <p class="section-intro">The temptation is to pick one and force it everywhere. That fails. Here's why the IA has to honor both modes.</p>
+
+    <div class="rationale-grid">
+
+      <div class="rationale-item">
+        <div class="rationale-num">01</div>
+        <div class="rationale-body">
+          <h4>Different cognitive demands, different UI patterns</h4>
+          <p>Triage rewards speed and breadth — scan, decide, move on. Focused work rewards depth and continuity — load context, sustain a thread, manipulate many items. A single UI optimized for either degrades the other.</p>
+        </div>
+      </div>
+
+      <div class="rationale-item">
+        <div class="rationale-num">02</div>
+        <div class="rationale-body">
+          <h4>Forcing entity silos breaks the triage flow</h4>
+          <p>If "what needs me right now?" requires the EA to walk through six entity-specific menus, they'll miss things. Cross-entity triage demands a unified queue at the top of nav.</p>
+        </div>
+      </div>
+
+      <div class="rationale-item">
+        <div class="rationale-num">03</div>
+        <div class="rationale-body">
+          <h4>Forcing a single inbox breaks deep work</h4>
+          <p>A monthly tech debt review needs filters, bulk actions, lifecycle context, and modeling tools that are specific to tech debt. Trying to do it in a generic queue is friction. Each entity earns its own dedicated workspace.</p>
+        </div>
+      </div>
+
+      <div class="rationale-item">
+        <div class="rationale-num">04</div>
+        <div class="rationale-body">
+          <h4>Mature products already do this</h4>
+          <p>Salesforce Lightning pairs a "Today" inbox with deep object workspaces. Jira pairs "Your work" with project boards. ServiceNow's own Agent Workspace pairs a unified queue with record-type spaces. The pattern is well-validated.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="tab-next-wrap">
+    <button class="tab-next-btn" data-tab="failure">
+      Why pure intent-based fails
+      <span aria-hidden="true">→</span>
+    </button>
+  </div>
+
+  </div>
+
+  <div class="tab-panel" id="tab-failure">
+
+  <section class="block">
+    <h2>Two extremes considered</h2>
+    <p class="section-intro">The two endpoints of the design space — today's function-based menu, and the pure intent-based alternative. Each addresses what the other gets wrong, but neither survives contact with how EAs actually work. Sitting them side-by-side makes the trade-offs visible and motivates the hybrid we land on.</p>
+
+    <div class="nav-compare-grid">
+
+      <div class="card">
+        <div class="eyebrow">Today · Function-based</div>
+        <h3 class="nav-card-title">Current EAW navigation</h3>
+        <p class="nav-card-desc">Each entity type and tool gets its own L1. Home and Dashboards are siloed. Modeling and Architectural analyzer are L1 destinations.</p>
+
+        <ul class="nav-list">
+          <li>Home</li>
+          <li>Dashboards</li>
+          <li>Business portfolio</li>
+          <li>Application portfolio</li>
+          <li>Technology portfolio</li>
+          <li>Modeling</li>
+          <li>Data certification</li>
+          <li>Architectural review board</li>
+          <li>Portfolio</li>
+          <li>Setup</li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="card">
+          <div class="eyebrow">Strawman · Pure intent-based</div>
+          <h3 class="nav-card-title">All-intent navigation</h3>
+          <p class="nav-card-desc">Every L1 is a verb. Every entity-related task lives underneath the verb that describes it — but the same entity (color-coded) ends up scattered across multiple intent groups.</p>
+
+          <div class="nav-group-label">Plan</div>
+          <ul class="nav-list">
+            <li data-entity="bus">Business capability mapping</li>
+            <li data-entity="prod">Product capability mapping</li>
+            <li data-entity="app">Application rationalization</li>
+            <li data-entity="app">Application roadmap</li>
+            <li data-entity="trm">TRM product lifecycle</li>
+            <li>Modeling</li>
+          </ul>
+
+          <div class="nav-group-label">Monitor</div>
+          <ul class="nav-list">
+            <li data-entity="bus">Business capability coverage</li>
+            <li data-entity="app">Application portfolio health</li>
+            <li data-entity="trm">TRM product lifecycle risk</li>
+            <li data-entity="debt">Technical debt health</li>
+            <li>Shadow IT risk</li>
+            <li data-entity="arb">ARB pipeline efficiency</li>
+            <li data-entity="data">Data certification progress</li>
+          </ul>
+
+          <div class="nav-group-label">Govern</div>
+          <ul class="nav-list">
+            <li data-entity="arb">ARB approval rules</li>
+            <li data-entity="data">Data certification policies</li>
+            <li data-entity="trm">TRM standards</li>
+          </ul>
+        </div>
+
+        <div class="entity-legend">
+          <span class="legend-item"><span class="legend-dot" style="background:#52B8FF"></span>Capabilities</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#7661FF"></span>Product capability</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#14B8A6"></span>Applications</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#F87171"></span>Technical debt</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#BF71F2"></span>TRM</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#63DF4E"></span>ARB</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#FBBF24"></span>Data cert</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Why pure intent-based fails</h2>
+    <p class="section-intro">The pure intent-based strawman in the comparison above looks clean on paper, but it falls apart in contact with how EAs actually work. Six failure modes:</p>
+
+    <div class="rationale-grid">
+      <div class="rationale-item">
+        <div class="rationale-num">01</div>
+        <div class="rationale-body">
+          <h4>Cross-entity workflows split across multiple intents</h4>
+          <p>Application rationalization needs Plan (the strategy), Monitor (health signals to trigger it), and Govern (ARB approvals to retire). Three navigation destinations for one continuous workflow. The EA navigates back and forth instead of working in one place.</p>
+        </div>
+      </div>
+      <div class="rationale-item">
+        <div class="rationale-num">02</div>
+        <div class="rationale-body">
+          <h4>Each entity repeats across every intent</h4>
+          <p>"Application portfolio health" lives in Monitor, "Application rationalization" in Plan, "App-related ARB requests" in Govern. The L2 ends up being the entity grid restated three times — same nouns, different verbs in front.</p>
+        </div>
+      </div>
+      <div class="rationale-item">
+        <div class="rationale-num">03</div>
+        <div class="rationale-body">
+          <h4>EAs think in entities, not intents</h4>
+          <p>When an EA opens the workspace thinking "I need to work the application portfolio," pure intent-based forces them to translate that into "the app stuff is split across Plan, Monitor, and Govern — which one do I open first?" Translation cost compounds across every session.</p>
+        </div>
+      </div>
+      <div class="rationale-item">
+        <div class="rationale-num">04</div>
+        <div class="rationale-body">
+          <h4>No natural home for reactive triage</h4>
+          <p>Pure intent-based has nowhere for "what needs me right now across all entities" — the unified inbox we identified as critical for the daily 80% spent in Clear-my-plate mode. Monitor isn't quite right (those are dashboards, not action queues); Govern is too narrow.</p>
+        </div>
+      </div>
+      <div class="rationale-item">
+        <div class="rationale-num">05</div>
+        <div class="rationale-body">
+          <h4>Tools don't fit cleanly anywhere</h4>
+          <p>Modeling shoehorns into Plan, but it's also used during ARB review (Govern), capability analysis (Monitor), and stakeholder discussions. Pure intent-based forces tools into a single home that doesn't reflect how they're actually used.</p>
+        </div>
+      </div>
+      <div class="rationale-item">
+        <div class="rationale-num">06</div>
+        <div class="rationale-body">
+          <h4>Mixes views and actions as siblings</h4>
+          <p>"Application portfolio health" is a dashboard you look at; "Application rationalization" is an ongoing program you participate in. Putting them as L2 siblings under different intent verbs treats them as equivalent navigation destinations when they're fundamentally different kinds of things.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>How an EA sees the architecture</h2>
+    <p class="section-intro">Most Enterprise Architects are trained on TOGAF, the dominant enterprise architecture framework. It organizes the world into four stacked domains — Business, Data, Application, Technology — and EAs reason, navigate, and group everything they touch through that layering. Any IA we design has to respect this lens, or it forces EAs to translate from their mental model on every interaction.</p>
+
+    <div class="togaf-container">
+      <div class="togaf-pyramid">
+        <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TOGAF architecture domains pyramid showing Business at top, Data, Application, and Technology at bottom">
+          <polygon points="55,230 265,230 300,300 20,300" fill="#6BA4C4"/>
+          <polygon points="90,160 230,160 265,230 55,230" fill="#3B7FA0"/>
+          <polygon points="125,90 195,90 230,160 90,160" fill="#1E5675"/>
+          <polygon points="160,20 195,90 125,90" fill="#032D42"/>
+          <text x="160" y="72" text-anchor="middle" fill="#FFFFFF" font-family="ServiceNow Sans Mono, monospace" font-size="10" font-weight="600">01</text>
+          <text x="160" y="130" text-anchor="middle" fill="#FFFFFF" font-family="ServiceNow Sans Mono, monospace" font-size="13" font-weight="600">02</text>
+          <text x="160" y="200" text-anchor="middle" fill="#FFFFFF" font-family="ServiceNow Sans Mono, monospace" font-size="13" font-weight="600">03</text>
+          <text x="160" y="270" text-anchor="middle" fill="#FFFFFF" font-family="ServiceNow Sans Mono, monospace" font-size="13" font-weight="600">04</text>
+        </svg>
+      </div>
+
+      <div class="togaf-descriptions">
+        <div class="togaf-row" data-layer="business">
+          <div class="togaf-num">01</div>
+          <div class="togaf-body">
+            <strong>Business</strong>
+            <span>Strategy, governance, organization, and key business processes.</span>
+          </div>
+        </div>
+        <div class="togaf-row" data-layer="data">
+          <div class="togaf-num">02</div>
+          <div class="togaf-body">
+            <strong>Data</strong>
+            <span>Logical and physical data assets and data management processes.</span>
+          </div>
+        </div>
+        <div class="togaf-row" data-layer="application">
+          <div class="togaf-num">03</div>
+          <div class="togaf-body">
+            <strong>Application</strong>
+            <span>Individual applications and their relationships with the business processes they support.</span>
+          </div>
+        </div>
+        <div class="togaf-row" data-layer="technology">
+          <div class="togaf-num">04</div>
+          <div class="togaf-body">
+            <strong>Technology</strong>
+            <span>Hardware and software infrastructure that supports business, data, and applications.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-label">Why this lens matters for the IA</div>
+      <p>The proposed hybrid uses <strong>Business</strong>, <strong>Application</strong>, and <strong>Technology</strong> portfolios at L1 because they map directly to TOGAF domains. Data is treated cross-cutting in EAW (data certification records flow through Govern). It's also why <strong>Business capabilities</strong> and <strong>Product capabilities</strong> sit in different portfolios despite sharing the word "capability" — they live in different architecture layers, are owned by different roles, and have different lifecycles.</p>
+    </div>
+  </section>
+
+  <div class="tab-next-wrap">
+    <button class="tab-next-btn" data-tab="hybrid">
+      Proposed hybrid navigation
+      <span aria-hidden="true">→</span>
+    </button>
+  </div>
+
+  </div>
+
+  <div class="tab-panel" id="tab-hybrid">
+
+  <section class="block">
+    <h2>The honest hybrid</h2>
+    <p class="section-intro">The synthesis. Four bands at L1: a unified triage queue for global reactive work, entity portfolios and governance for focused sessions, workbench shortcuts to embedded tools, and personalized favorites the user pins. This isn't "pure" anything — it's a structure that respects how EAs actually work, organized around TOGAF's architecture domains, with intent-based grouping reserved for work that genuinely cuts across entities.</p>
+
+    <div class="hybrid-annotated">
+      <div class="hybrid-annotated-header">
+        <div class="eyebrow">Proposed · Intent + entity hybrid</div>
+        <h3 class="nav-card-title">Hybrid navigation</h3>
+        <p class="nav-card-desc">Four visual bands separating global triage, focused-session deep work, workbench shortcuts, and personalized favorites.</p>
+      </div>
+
+      <div class="hybrid-band-card">
+
+        <div class="hybrid-row">
+          <div class="hybrid-row-label">
+            <span class="hybrid-band-eyebrow">Global</span>
+            <p class="hybrid-band-desc">Clear-the-plate scan of priorities, approvals, and items needing attention from across all entity types.</p>
+          </div>
+          <div>
+            <div class="hybrid-l1">
+              <div class="hybrid-l1-name">Intelligent home</div>
+            </div>
+            <div class="hybrid-l1">
+              <div class="hybrid-l1-name">Agents</div>
+            </div>
+            <div class="hybrid-l1">
+              <div class="hybrid-l1-name">Notifications</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hybrid-row hybrid-row--bordered">
+          <div class="hybrid-row-label">
+            <span class="hybrid-band-eyebrow">Focused sessions</span>
+            <p class="hybrid-band-desc">Deep work, organized by TOGAF architecture domain.</p>
+          </div>
+          <div>
+            <div class="hybrid-l1">
+              <div class="hybrid-l1-name">Business portfolio</div>
+              <ul class="hybrid-l2">
+                <li>Business capabilities mapping</li>
+              </ul>
+            </div>
+
+            <div class="hybrid-l1">
+              <div class="hybrid-l1-name">Applications portfolio</div>
+              <ul class="hybrid-l2">
+                <li>Product capabilities</li>
+                <li>Business applications</li>
+                <li>Monitor health</li>
+                <li>Build roadmap</li>
+                <li>Rationalize applications</li>
+              </ul>
+            </div>
+
+            <div class="hybrid-l1">
+              <div class="hybrid-l1-name">Technology portfolio</div>
+              <ul class="hybrid-l2">
+                <li>Technical debt</li>
+                <li>Technology usage</li>
+                <li>Technology standards</li>
+                <li>Shadow IT discovery</li>
+              </ul>
+            </div>
+
+            <div class="hybrid-l1">
+              <div class="hybrid-l1-name">Governance</div>
+              <ul class="hybrid-l2">
+                <li>Architectural Review Board</li>
+                <li>Data certification</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="hybrid-row">
+          <div class="hybrid-row-label">
+            <span class="hybrid-band-eyebrow">Workbench</span>
+            <p class="hybrid-band-desc">Tools embed inside relevant workflows — these are just shortcuts.</p>
+          </div>
+          <div>
+            <div class="hybrid-l1">
+              <div class="hybrid-l1-name">Workbench</div>
+              <ul class="hybrid-l2">
+                <li>Modeling</li>
+                <li>Architectural analyzer</li>
+                <li>Architectural artifacts</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="hybrid-row hybrid-row--bordered">
+          <div class="hybrid-row-label">
+            <span class="hybrid-band-eyebrow">Favorites</span>
+            <p class="hybrid-band-desc">Personalized shortcuts the user has pinned — projects, workflows, or destinations they visit often.</p>
+          </div>
+          <div>
+            <div class="hybrid-l1">
+              <div class="hybrid-l1-name">My projects</div>
+            </div>
+            <div class="hybrid-l1">
+              <div class="hybrid-l1-name">Demand planning</div>
+            </div>
+            <div class="hybrid-l1">
+              <div class="hybrid-l1-name">AI intake tracking</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-label">Key changes from today</div>
+      <p>
+        <strong>Intelligent home</strong> added as a top band — unified, cross-entity triage queue replacing today's scattered Home/Dashboards entries.<br>
+        <strong>Four-band L1 structure</strong> separates global triage, focused-session deep work, workbench shortcuts, and personalized favorites so the IA's logic is visually scannable.<br>
+        <strong>Governance</strong> umbrella consolidates ARB and Data certification under one stewardship L1.<br>
+        <strong>Workbench</strong> framed as a shortcut hub — the actual tools embed inside relevant workflows; this L1 just provides quick access.<br>
+        <strong>Favorites</strong> band added — personalized shortcuts the user pins, surfacing projects, workflows, and destinations they visit often.<br>
+        <strong>Architectural artifacts</strong> added as a tool (ADRs, decision records).<br>
+        <strong>Insights and metrics</strong> embedded contextually inside each portfolio rather than living in a separate Dashboards silo.<br>
+        <strong>L2 children</strong> under each portfolio reorganized to be intent-driven (e.g., "App Rationalization", "Capability mapping") rather than feature labels.<br>
+        <strong>Setup</strong> moves to a settings menu rather than primary nav.
+      </p>
+    </div>
+  </section>
+
+  </div>
+
+  <footer>&copy; 2026 ServiceNow, Inc. All rights reserved.</footer>
+
+</div>
+<script>
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(function(b) {
+      b.classList.toggle('active', b.dataset.tab === tab);
+    });
+    document.querySelectorAll('.tab-panel').forEach(function(p) {
+      p.classList.toggle('active', p.id === 'tab-' + tab);
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  document.querySelectorAll('.tab-btn, .tab-next-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      switchTab(btn.dataset.tab);
+    });
+  });
+</script>
+</body>
+</html>
