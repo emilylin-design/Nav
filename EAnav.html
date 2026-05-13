@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Enterprise Architecture — Navigation Exploration</title>
 <style>
@@ -51,8 +52,8 @@ p { font-weight: 300; line-height: 1.55; color: var(--gray-900); }
 
 .lede { font-size: 1.125rem; color: var(--gray-900); font-weight: 300; max-width: 870px; }
 
-section.block { padding: 2rem 0 0.5rem; }
-section.block + section.block { padding-top: 2.5rem; }
+section.block { padding: 3rem 0 0.5rem; }
+section.block + section.block { padding-top: 4rem; }
 
 .card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-md); padding: 1.75rem; box-shadow: var(--shadow-md); transition: all .2s ease; }
 .card:hover { transform: translateY(-2px); box-shadow: var(--shadow-xl); }
@@ -71,22 +72,22 @@ section.block + section.block { padding-top: 2.5rem; }
 .mode-meta-item { flex: 1; }
 .mode-meta-label { font-family: var(--font-mono); font-size: .625rem; text-transform: uppercase; letter-spacing: .04em; color: var(--gray-700); margin-bottom: .25rem; font-weight: 500; }
 .mode-meta-value { font-size: .875rem; color: var(--gray-900); font-weight: 500; }
-.mode-quote { font-style: italic; color: var(--infinite-blue); font-size: 1rem; font-weight: 500; margin: 1rem 0 1.25rem; padding-left: 1rem; border-left: 3px solid var(--infinite-blue); }
+.mode-quote { font-style: italic; color: var(--infinite-blue); font-size: 1rem; font-weight: 500; margin: 1rem 0 1.25rem; padding-left: 0; }
 .mode-list { list-style: none; padding: 0; margin: 0; }
 .mode-list li { font-size: .9375rem; font-weight: 300; line-height: 1.45; padding: .5rem 0; padding-left: 1.25rem; position: relative; border-bottom: 1px solid var(--gray-200); color: var(--gray-900); }
 .mode-list li:last-child { border-bottom: none; }
 .mode-list li::before { content: ""; position: absolute; left: 0; top: .9rem; width: 6px; height: 6px; border-radius: 50%; background: var(--infinite-blue); }
 .mode-list li strong { color: var(--gray-900); }
 
-.callout { border-radius: 0 var(--radius-md) var(--radius-md) 0; padding: 1.25rem 1.5rem; margin: 1rem 0; border-left: 3px solid; background: rgba(99,223,78,.08); border-color: var(--wasabi-green); }
+.callout { border-radius: 0 var(--radius-md) var(--radius-md) 0; padding: 1.25rem 1.5rem; margin: 1rem 0; border-left: 3px solid; background: rgba(3, 45, 66, 0.06); border-color: var(--infinite-blue); }
 .callout-label { font-family: var(--font-mono); font-size: .6875rem; text-transform: uppercase; letter-spacing: .04em; color: var(--infinite-blue); margin-bottom: .5rem; font-weight: 600; }
-.callout p { font-size: .9375rem; line-height: 1.5; font-weight: 300; color: var(--gray-900); }
+.callout p { font-size: .9375rem; line-height: 1.5; font-weight: 350; color: var(--gray-700); }
 
 .rationale-grid { display: grid; grid-template-columns: 1fr; gap: 0.75rem; margin-top: 0.5rem; }
 .rationale-item { display: flex; gap: 1.25rem; padding: 1.25rem 1.5rem; background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); }
 .rationale-num { font-family: var(--font-mono); font-size: 1.5rem; color: var(--infinite-blue); font-weight: 700; line-height: 1; min-width: 2.5rem; }
 .rationale-body h4 { font-size: 1rem; font-weight: 500; margin-bottom: .25rem; color: var(--gray-900); letter-spacing: -0.01em; }
-.rationale-body p { font-size: .9375rem; color: var(--gray-900); font-weight: 300; line-height: 1.5; }
+.rationale-body p { font-size: .9375rem; color: var(--gray-900); font-weight: 300; line-height: 1.7; }
 
 .section-intro { color: var(--gray-900); margin-bottom: 1rem; font-size: .9375rem; font-weight: 300; }
 
@@ -94,7 +95,7 @@ section.block + section.block { padding-top: 2.5rem; }
 .nav-compare-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.5rem; margin-top: 0.5rem; align-items: start; }
 .nav-card-title { font-size: 1.25rem; font-weight: 700; color: var(--infinite-blue); letter-spacing: -0.01em; margin-top: 0.5rem; margin-bottom: 0.5rem; }
 .nav-card-desc { font-size: 0.875rem; color: var(--gray-900); font-weight: 300; line-height: 1.5; margin-bottom: 1.25rem; }
-.nav-group-label { font-family: var(--font-mono); font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--gray-700); font-weight: 500; margin: 1.25rem 0 0.5rem; padding-bottom: 0.375rem; border-bottom: 1px solid var(--gray-200); }
+.nav-group-label { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--infinite-blue); font-weight: 700; margin: 1.25rem 0 0.5rem; padding-bottom: 0.375rem; border-bottom: 1px solid var(--gray-200); }
 .nav-group-label:first-of-type { margin-top: 0; }
 .nav-group-label .nav-group-note { color: var(--gray-700); font-weight: 400; text-transform: none; letter-spacing: 0; opacity: 0.7; margin-left: 0.25rem; }
 .nav-list { list-style: none; padding: 0; margin: 0; }
@@ -128,7 +129,7 @@ section.block + section.block { padding-top: 2.5rem; }
   vertical-align: 1px;
 }
 .entity-intents { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem; margin-top: 0.625rem; }
-.intent-step { font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 600; padding: 0.2rem 0.5rem; border-radius: 3px; white-space: nowrap; -webkit-font-smoothing: antialiased; }
+.intent-step { font-family: 'Inter', var(--font-sans); font-size: 0.8125rem; font-weight: 500; padding: 0.2rem 0.5rem; border-radius: 3px; white-space: nowrap; }
 .intent-arrow { font-size: 0.625rem; color: var(--gray-400); line-height: 1; }
 .entity-row[data-for="app"] .intent-step { background: rgba(20,184,166,0.08); color: #0F766E; }
 .entity-row[data-for="bus"] .intent-step { background: rgba(82,184,255,0.1); color: #1D6FA3; }
@@ -172,9 +173,10 @@ section.block + section.block { padding-top: 2.5rem; }
 /* White nav card segment — 350px fixed, connected visually between bands */
 .hybrid-nav-segment { flex: 0 0 350px; width: 350px; order: -1; background: var(--white); border: 1px solid var(--gray-200); padding: 1.25rem 1.5rem; box-shadow: var(--shadow-md); }
 .hybrid-band:nth-child(2) .hybrid-nav-segment { border-radius: 0.75rem 0.75rem 0 0; }
-.hybrid-band:nth-child(5) .hybrid-nav-segment { border-radius: 0 0 0.75rem 0.75rem; border-top: none; }
+.hybrid-band:nth-child(6) .hybrid-nav-segment { border-radius: 0 0 0.75rem 0.75rem; border-top: none; }
 .hybrid-band:nth-child(3) .hybrid-nav-segment { border-radius: 0; border-top: none; border-bottom: none; }
-.hybrid-band:nth-child(4) .hybrid-nav-segment { border-radius: 0; border-top: none; padding-top: 0; }
+.hybrid-band:nth-child(4) .hybrid-nav-segment { border-radius: 0; border-top: none; border-bottom: none; padding-top: 0; }
+.hybrid-band:nth-child(5) .hybrid-nav-segment { border-radius: 0; border-top: none; }
 
 .hybrid-l1 { margin-bottom: 0.875rem; }
 .hybrid-l1:last-child { margin-bottom: 0; }
@@ -211,7 +213,7 @@ section.block + section.block { padding-top: 2.5rem; }
 .role-badge { display: inline-flex; align-items: center; gap: 0.375rem; font-family: var(--font-mono); font-size: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.25rem 0.625rem; border-radius: var(--radius-full); margin-bottom: 0.75rem; }
 .role-badge--ea { background: rgba(3,45,66,0.08); color: var(--infinite-blue); }
 .role-badge--ao { background: rgba(20,184,166,0.1); color: var(--teal-700); }
-.role-nav-title { font-size: 1rem; font-weight: 700; color: var(--infinite-blue); margin-bottom: 0.25rem; letter-spacing: -0.01em; }
+.role-nav-title { font-size: 1rem; font-weight: 700; color: var(--infinite-blue); margin-bottom: 0.25rem; margin-top: 1rem; letter-spacing: -0.01em; }
 .role-nav-desc { font-size: 0.8125rem; font-weight: 300; color: var(--gray-700); line-height: 1.45; }
 .role-nav-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-md); box-shadow: var(--shadow-md); overflow: hidden; }
 .role-nav-body { padding: 0 1.5rem; }
@@ -267,7 +269,7 @@ section.block + section.block { padding-top: 2.5rem; }
       <div class="entity-row" data-for="app">
         <div class="entity-num">01</div>
         <div class="entity-body">
-          <strong data-entity="app">Business applications</strong>
+          <strong>Business applications</strong>
           <span>Apps in the portfolio — health, lifecycle stage, ownership, dependencies.</span>
           <div class="entity-intents">
             <span class="intent-step">Map to caps</span><span class="intent-arrow">→</span>
@@ -280,7 +282,7 @@ section.block + section.block { padding-top: 2.5rem; }
       <div class="entity-row" data-for="bus">
         <div class="entity-num">02</div>
         <div class="entity-body">
-          <strong data-entity="bus">Business capabilities</strong>
+          <strong>Business capabilities</strong>
           <span>What the business does, mapped to the apps that enable it.</span>
           <div class="entity-intents">
             <span class="intent-step">Map to apps</span><span class="intent-arrow">→</span>
@@ -292,7 +294,7 @@ section.block + section.block { padding-top: 2.5rem; }
       <div class="entity-row" data-for="prod">
         <div class="entity-num">03</div>
         <div class="entity-body">
-          <strong data-entity="prod">Product capability</strong>
+          <strong>Product capability</strong>
           <span>Features and functions a product delivers, mapped to the business capabilities they enable.</span>
           <div class="entity-intents">
             <span class="intent-step">Map to apps</span><span class="intent-arrow">→</span>
@@ -304,7 +306,7 @@ section.block + section.block { padding-top: 2.5rem; }
       <div class="entity-row" data-for="debt">
         <div class="entity-num">04</div>
         <div class="entity-body">
-          <strong data-entity="debt">Technical debt</strong>
+          <strong>Technical debt</strong>
           <span>Outdated tech, EOL exposure, modernization candidates.</span>
           <div class="entity-intents">
             <span class="intent-step">Identify</span><span class="intent-arrow">→</span>
@@ -317,7 +319,7 @@ section.block + section.block { padding-top: 2.5rem; }
       <div class="entity-row" data-for="trm">
         <div class="entity-num">05</div>
         <div class="entity-body">
-          <strong data-entity="trm">TRM products</strong>
+          <strong>TRM products</strong>
           <span>Technology Reference Model — standards catalog, lifecycle, usage.</span>
           <div class="entity-intents">
             <span class="intent-step">Catalog</span><span class="intent-arrow">→</span>
@@ -330,7 +332,7 @@ section.block + section.block { padding-top: 2.5rem; }
       <div class="entity-row" data-for="arb">
         <div class="entity-num">06</div>
         <div class="entity-body">
-          <strong data-entity="arb">ARB requests</strong>
+          <strong>ARB requests</strong>
           <span>Architecture changes pending review, approval, or rejection.</span>
           <div class="entity-intents">
             <span class="intent-step">Submit</span><span class="intent-arrow">→</span>
@@ -343,7 +345,7 @@ section.block + section.block { padding-top: 2.5rem; }
       <div class="entity-row" data-for="data">
         <div class="entity-num">07</div>
         <div class="entity-body">
-          <strong data-entity="data">Data certification records</strong>
+          <strong>Data certification records</strong>
           <span>Periodic validation of data quality, ownership, and accuracy.</span>
           <div class="entity-intents">
             <span class="intent-step">Create policies</span><span class="intent-arrow">→</span>
@@ -512,46 +514,37 @@ section.block + section.block { padding-top: 2.5rem; }
       <div>
         <div class="card">
           <div class="eyebrow">Strawman · Pure intent-based</div>
-          <h3 class="nav-card-title">All-intent navigation</h3>
+          <h3 class="nav-card-title">Pure intent-based navigation</h3>
           <p class="nav-card-desc">Every L1 is a verb. Every entity-related task lives underneath the verb that describes it — but the same entity (color-coded) ends up scattered across multiple intent groups.</p>
 
           <div class="nav-group-label">Plan</div>
           <ul class="nav-list">
-            <li data-entity="bus">Map business capabilities</li>
-            <li data-entity="prod">Map product capabilities</li>
-            <li data-entity="app">Rationalize applications</li>
-            <li data-entity="app">Plan application roadmap</li>
-            <li data-entity="trm">Plan TRM product lifecycle</li>
+            <li>Map business capabilities</li>
+            <li>Map product capabilities</li>
+            <li>Rationalize <span style="color: var(--teal-700); font-weight: 500;">applications</span></li>
+            <li>Plan <span style="color: var(--teal-700); font-weight: 500;">application</span> roadmap</li>
+            <li>Plan <span style="color: #7661FF; font-weight: 500;">TRM</span> product lifecycle</li>
             <li>Model entity relationships</li>
           </ul>
 
           <div class="nav-group-label">Monitor</div>
           <ul class="nav-list">
-            <li data-entity="bus">Business capability coverage</li>
-            <li data-entity="app">Analyze application portfolio health</li>
-            <li data-entity="trm">Assess TRM product lifecycle risk</li>
-            <li data-entity="debt">Monitor technical debt health</li>
-            <li data-entity="arb">Monitor ARB pipeline efficiency</li>
-            <li data-entity="data">Monitor data certification progress</li>
+            <li>Business capability coverage</li>
+            <li>Analyze <span style="color: var(--teal-700); font-weight: 500;">application</span> portfolio health</li>
+            <li>Assess <span style="color: #7661FF; font-weight: 500;">TRM</span> product lifecycle risk</li>
+            <li>Monitor technical debt health</li>
+            <li>Monitor ARB pipeline efficiency</li>
+            <li>Monitor data certification progress</li>
             <li>Monitor Shadow IT risk</li>
           </ul>
 
           <div class="nav-group-label">Govern</div>
           <ul class="nav-list">
-            <li data-entity="arb">Build ARB approval rules</li>
-            <li data-entity="data">Build data certification policies</li>
-            <li data-entity="trm">Build TRM standards</li>
+            <li>Approve <span style="color: var(--teal-700); font-weight: 500;">application</span> onboarding</li>
+            <li>Build ARB approval rules</li>
+            <li>Build data certification policies</li>
+            <li>Build <span style="color: #7661FF; font-weight: 500;">TRM</span> standards</li>
           </ul>
-        </div>
-
-        <div class="entity-legend">
-          <span class="legend-item"><span class="legend-dot" style="background:#52B8FF"></span>Capabilities</span>
-          <span class="legend-item"><span class="legend-dot" style="background:#7661FF"></span>Product capability</span>
-          <span class="legend-item"><span class="legend-dot" style="background:#14B8A6"></span>Applications</span>
-          <span class="legend-item"><span class="legend-dot" style="background:#F87171"></span>Technical debt</span>
-          <span class="legend-item"><span class="legend-dot" style="background:#BF71F2"></span>TRM</span>
-          <span class="legend-item"><span class="legend-dot" style="background:#63DF4E"></span>ARB</span>
-          <span class="legend-item"><span class="legend-dot" style="background:#FBBF24"></span>Data cert</span>
         </div>
       </div>
 
@@ -560,7 +553,7 @@ section.block + section.block { padding-top: 2.5rem; }
 
   <section class="block">
     <h2>Why pure intent-based fails</h2>
-    <p class="section-intro">The pure intent-based strawman in the comparison above looks clean on paper, but it falls apart in contact with how EAs actually work. Six failure modes:</p>
+    <p class="section-intro">The pure intent-based strawman in the comparison above looks clean on paper, but it falls apart in contact with how EAs actually work.</p>
 
     <div class="rationale-grid">
       <div class="rationale-item">
@@ -574,35 +567,14 @@ section.block + section.block { padding-top: 2.5rem; }
         <div class="rationale-num">02</div>
         <div class="rationale-body">
           <h4>Each entity repeats across every intent</h4>
-          <p>"Application portfolio health" lives in Monitor, "Application rationalization" in Plan, "App-related ARB requests" in Govern. The L2 ends up being the entity grid restated three times — same nouns, different verbs in front.</p>
+          <p>"<span style="color: var(--teal-700); font-weight: 500;">Application portfolio health</span>" lives in Monitor, "<span style="color: var(--teal-700); font-weight: 500;">Application rationalization</span>" in Plan, "<span style="color: var(--teal-700); font-weight: 500;">App-related ARB requests</span>" in Govern. The L2 ends up being the entity grid restated three times — same nouns, different verbs in front.</p>
         </div>
       </div>
       <div class="rationale-item">
         <div class="rationale-num">03</div>
         <div class="rationale-body">
-          <h4>EAs think in entities, not intents</h4>
-          <p>When an EA opens the workspace thinking "I need to work the application portfolio," pure intent-based forces them to translate that into "the app stuff is split across Plan, Monitor, and Govern — which one do I open first?" Translation cost compounds across every session.</p>
-        </div>
-      </div>
-      <div class="rationale-item">
-        <div class="rationale-num">04</div>
-        <div class="rationale-body">
-          <h4>No natural home for reactive triage</h4>
-          <p>Pure intent-based has nowhere for "what needs me right now across all entities" — the unified inbox we identified as critical for the daily 80% spent in Clear-my-plate mode. Monitor isn't quite right (those are dashboards, not action queues); Govern is too narrow.</p>
-        </div>
-      </div>
-      <div class="rationale-item">
-        <div class="rationale-num">05</div>
-        <div class="rationale-body">
-          <h4>Tools don't fit cleanly anywhere</h4>
-          <p>Modeling shoehorns into Plan, but it's also used during ARB review (Govern), capability analysis (Monitor), and stakeholder discussions. Pure intent-based forces tools into a single home that doesn't reflect how they're actually used.</p>
-        </div>
-      </div>
-      <div class="rationale-item">
-        <div class="rationale-num">06</div>
-        <div class="rationale-body">
-          <h4>Mixes views and actions as siblings</h4>
-          <p>"Application portfolio health" is a dashboard you look at; "Application rationalization" is an ongoing program you participate in. Putting them as L2 siblings under different intent verbs treats them as equivalent navigation destinations when they're fundamentally different kinds of things.</p>
+          <h4>Pure intents increase mental load</h4>
+          <p>When an EA opens the workspace thinking "<span style="color: var(--teal-700); font-weight: 500;">I need to work the application portfolio,</span>" pure intent-based forces them to translate that into "<span style="color: var(--teal-700); font-weight: 500;">the app stuff is split across Plan, Monitor, and Govern — which one do I open first?</span>" Translation cost compounds across every session.</p>
         </div>
       </div>
     </div>
@@ -660,7 +632,7 @@ section.block + section.block { padding-top: 2.5rem; }
 
     <div class="callout">
       <div class="callout-label">Why this lens matters for the IA</div>
-      <p>The proposed hybrid uses <strong>Business</strong>, <strong>Application</strong>, and <strong>Technology</strong> portfolios at L1 because they map directly to TOGAF domains. Data is treated cross-cutting in EAW (data certification records flow through Govern). It's also why <strong>Business capabilities</strong> and <strong>Product capabilities</strong> sit in different portfolios despite sharing the word "capability" — they live in different architecture layers, are owned by different roles, and have different lifecycles.</p>
+      <p>The proposed hybrid uses <strong>Business</strong>, <strong>Application</strong>, and <strong>Technology</strong> portfolios at L1 because they map directly to TOGAF domains. Data is treated cross-cutting in EAW (data certification records flow through Govern). It's also why <strong>Business capabilities</strong> and <strong>Product capabilities</strong> sit in different portfolios despite sharing the word "<span style="color: var(--teal-700); font-weight: 500;">capability</span>" — they live in different architecture layers, are owned by different roles, and have different lifecycles.</p>
     </div>
   </section>
 
@@ -725,6 +697,15 @@ section.block + section.block { padding-top: 2.5rem; }
               <li>Rationalize applications</li>
             </ul>
           </div>
+        </div>
+      </div>
+
+      <div class="hybrid-band">
+        <div class="hybrid-row-label">
+          <span class="hybrid-band-eyebrow">Note</span>
+          <p class="hybrid-band-desc">Each entity has multiple actions — verb-first naming isn't always practical at L1.</p>
+        </div>
+        <div class="hybrid-nav-segment" style="border-top: none; border-radius: 0;">
           <div class="hybrid-l1">
             <div class="hybrid-l1-name">Technology portfolio</div>
             <ul class="hybrid-l2">
@@ -780,20 +761,6 @@ section.block + section.block { padding-top: 2.5rem; }
       </div>
     </div>
 
-    <div class="callout">
-      <div class="callout-label">Key changes from today</div>
-      <p>
-        <strong>Intelligent home</strong> added as a top band — unified, cross-entity triage queue replacing today's scattered Home/Dashboards entries.<br>
-        <strong>Four-band L1 structure</strong> separates global triage, focused-session deep work, workbench shortcuts, and personalized favorites so the IA's logic is visually scannable.<br>
-        <strong>Governance</strong> umbrella consolidates ARB and Data certification under one stewardship L1.<br>
-        <strong>Workbench</strong> framed as a shortcut hub — the actual tools embed inside relevant workflows; this L1 just provides quick access.<br>
-        <strong>Favorites</strong> band added — personalized shortcuts the user pins, surfacing projects, workflows, and destinations they visit often.<br>
-        <strong>Architectural artifacts</strong> added as a tool (ADRs, decision records).<br>
-        <strong>Insights and metrics</strong> embedded contextually inside each portfolio rather than living in a separate Dashboards silo.<br>
-        <strong>L2 children</strong> under each portfolio reorganized to be intent-driven (e.g., "App Rationalization", "Capability mapping") rather than feature labels.<br>
-        <strong>Setup</strong> moves to a settings menu rather than primary nav.
-      </p>
-    </div>
   </section>
 
   <div class="tab-next-wrap">
@@ -816,8 +783,7 @@ section.block + section.block { padding-top: 2.5rem; }
       <!-- Enterprise Architect -->
       <div class="role-col">
         <div class="role-col-header">
-          <span class="role-badge role-badge--ea">Enterprise Architect</span>
-          <div class="role-nav-title">Full portfolio view</div>
+          <div class="role-nav-title">Enterprise Architect</div>
           <p class="role-nav-desc">Sees the entire estate across all domains. Owns the strategy, standards, and cross-cutting governance.</p>
         </div>
         <div class="role-nav-card">
@@ -886,8 +852,7 @@ section.block + section.block { padding-top: 2.5rem; }
       <!-- Application Owner -->
       <div class="role-col">
         <div class="role-col-header">
-          <span class="role-badge role-badge--ao">Application Owner</span>
-          <div class="role-nav-title">My applications view</div>
+          <div class="role-nav-title">Application Owner</div>
           <p class="role-nav-desc">Owns 10–12 applications. Needs health, lifecycle, debt, and governance scoped tightly to their portfolio — not the entire estate.</p>
         </div>
         <div class="role-nav-card">
@@ -903,10 +868,11 @@ section.block + section.block { padding-top: 2.5rem; }
               <div class="hybrid-l1" style="margin-bottom:0">
                 <div class="hybrid-l1-name">My applications</div>
                 <ul class="hybrid-l2">
-                  <li>Health &amp; status</li>
-                  <li>Lifecycle &amp; roadmap</li>
+                  <li>Health and status</li>
+                  <li>Lifecycle and roadmap</li>
                   <li>Dependencies map</li>
-                  <li>Costs &amp; usage</li>
+                  <li>Costs and usage</li>
+                  <li>Demands and projects</li>
                 </ul>
               </div>
             </div>
@@ -916,25 +882,18 @@ section.block + section.block { padding-top: 2.5rem; }
                 <div class="hybrid-l1-name">Technical debt</div>
                 <ul class="hybrid-l2">
                   <li>Debt by application</li>
-                  <li>EOL &amp; risk exposure</li>
+                  <li>EOL and risk exposure</li>
                   <li>Modernization candidates</li>
                 </ul>
               </div>
             </div>
 
             <div class="role-band">
-              <div class="hybrid-l1">
+              <div class="hybrid-l1" style="margin-bottom:0">
                 <div class="hybrid-l1-name">My ARB requests</div>
                 <ul class="hybrid-l2">
                   <li>Pending approval</li>
-                  <li>Approved &amp; rejected</li>
-                </ul>
-              </div>
-              <div class="hybrid-l1" style="margin-bottom:0">
-                <div class="hybrid-l1-name">Data certifications</div>
-                <ul class="hybrid-l2">
-                  <li>Due for review</li>
-                  <li>Certified records</li>
+                  <li>Approved and rejected</li>
                 </ul>
               </div>
             </div>
@@ -955,8 +914,7 @@ section.block + section.block { padding-top: 2.5rem; }
       <p>
         <strong>Scope:</strong> The EA sees the full estate; the Application Owner sees only their slice — every list, every metric, every queue is pre-filtered to their applications.<br>
         <strong>Depth over breadth:</strong> The App Owner gets deeper sub-navigation inside Applications and Technical debt, because that's where they spend their entire time.<br>
-        <strong>No strategy layer:</strong> Business capabilities, TRM standards, shadow IT discovery, and modeling tools are hidden — they belong to the EA's remit, not the App Owner's.<br>
-        <strong>Governance is narrowed:</strong> ARB and Data certification still appear, but scoped to requests and records tied to their applications only.
+        <strong>No strategy layer:</strong> Business capabilities, TRM standards, shadow IT discovery, and modeling tools are hidden — they belong to the EA's remit, not the App Owner's.
       </p>
     </div>
 
