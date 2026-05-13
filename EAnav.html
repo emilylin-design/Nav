@@ -147,7 +147,7 @@ section.block + section.block { padding-top: 4rem; }
 .entity-body strong[data-entity="data"]::before { background: #FBBF24; }
 
 /* Tab navigation */
-.tabs { display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; border-bottom: 2px solid var(--gray-200); margin: 1rem 0 2.5rem; }
+.tabs { display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; border-bottom: 2px solid var(--gray-200); margin: 1rem 0 0; }
 .tab-btn { padding: 0.875rem 0.25rem; font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 400; color: var(--gray-700); background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; margin-bottom: -2px; transition: color 0.15s, border-color 0.15s; letter-spacing: -0.005em; }
 .tab-btn:hover { color: var(--teal-700); }
 .tab-btn.active { color: var(--teal-700); font-weight: 700; border-bottom-color: var(--teal-500); }
@@ -203,7 +203,7 @@ section.block + section.block { padding-top: 4rem; }
 .togaf-body span { font-size: 0.875rem; color: var(--gray-900); font-weight: 300; line-height: 1.45; }
 
 /* Role-based nav comparison */
-.role-compare-grid { display: grid; grid-template-columns: repeat(2, 400px); grid-template-rows: auto auto; column-gap: 2rem; row-gap: 1rem; margin-top: 0.5rem; align-items: start; justify-content: center; }
+.role-compare-grid { display: grid; grid-template-columns: repeat(2, 400px); grid-template-rows: auto auto; column-gap: calc(2rem + 16px); row-gap: 1rem; margin-top: 0.5rem; align-items: start; justify-content: center; }
 .role-col { display: contents; }
 .role-col:nth-of-type(1) > .role-col-header { grid-column: 1; grid-row: 1; }
 .role-col:nth-of-type(1) > .role-nav-card { grid-column: 1; grid-row: 2; }
@@ -245,7 +245,7 @@ section.block + section.block { padding-top: 4rem; }
     <span style="font-family: var(--font-sans); font-size: 0.875rem; font-weight: 300; color: var(--gray-500);">Emily Lin</span>
   </header>
 
-  <section style="padding: 2rem 0 2.5rem;">
+  <section style="padding: 2rem 0 0.5rem;">
     <h1>Enterprise Architecture - Navigation</h1>
     <p class="lede">
       Exploring an intent-based redesign of the Enterprise Architect left navigation. Before we group anything, we have to be honest about the fact that EAs juggle many distinct entity types — and they don't always want to triage them the same way.
@@ -841,8 +841,8 @@ section.block + section.block { padding-top: 4rem; }
 
             <div class="role-band">
               <div class="hybrid-l1"><div class="hybrid-l1-name">My projects</div></div>
-              <div class="hybrid-l1"><div class="hybrid-l1-name">Demand planning</div></div>
-              <div class="hybrid-l1" style="margin-bottom:0"><div class="hybrid-l1-name">AI intake tracking</div></div>
+              <div class="hybrid-l1"><div class="hybrid-l1-name">Demand planning <span style="font-size:0.875rem; font-weight:400; color:var(--gray-700);">(CWM board)</span></div></div>
+              <div class="hybrid-l1" style="margin-bottom:0"><div class="hybrid-l1-name">AI intake tracking <span style="font-size:0.875rem; font-weight:400; color:var(--gray-700);">(AICT)</span></div></div>
             </div>
 
           </div>
@@ -900,7 +900,7 @@ section.block + section.block { padding-top: 4rem; }
 
             <div class="role-band">
               <div class="hybrid-l1"><div class="hybrid-l1-name">My projects</div></div>
-              <div class="hybrid-l1" style="margin-bottom:0"><div class="hybrid-l1-name">My pinned apps</div></div>
+              <div class="hybrid-l1" style="margin-bottom:0"><div class="hybrid-l1-name">My pinned boards</div></div>
             </div>
 
           </div>
